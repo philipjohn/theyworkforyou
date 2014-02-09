@@ -24,6 +24,12 @@ See http://codex.wordpress.org/Managing_Plugins#Installing_Plugins
 
 Then, grab an API key from [TheyWorkForYou.com](http://www.theyworkforyou.com/api/key) and enter it at Settings > TheyWorkForYou.
 
+== Frequently Asked Questions ==
+
+= Can I remove the "Data service provided by TheyWorkForYou" notice? =
+
+Nope! It's a kinda requirement of [TWFY's API](http://www.theyworkforyou.com/api/) and besides, you should be glad to point folks at their amazing resource.
+
 == Changelog ==
 
 = 0.4.1 =

@@ -97,6 +97,8 @@ class MPs_Recent_Activity extends WP_Widget {
 				// Link back to the MPs page on TWFY
 				echo '<p>More from <a href="http://www.theyworkforyou.com' . $mp['url'] . '">TheyWorkForYou.com</a></p>';
 			}
+			
+			echo 'Data service provided by <a href="http://theyworkforyou.com">TheyWorkForYou</a>';
 		}
 
 		echo $args['after_widget'];
