@@ -26,6 +26,9 @@ Future features list;
     http://wtfpl.net
 */
 
+/**
+ * Get the MPs Recent Activity widget
+ */
 require_once 'inc/mps_recent_activity.widget.php';
 
 ?>
