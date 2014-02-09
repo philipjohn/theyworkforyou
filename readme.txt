@@ -32,6 +32,9 @@ Nope! It's a kinda requirement of [TWFY's API](http://www.theyworkforyou.com/api
 
 == Changelog ==
 
+= 0.4.2 =
+* TWFY attribution
+
 = 0.4.1 =
 * Fixing bug where MP activity isn't refreshed when changed in the widget
 
