@@ -185,7 +185,7 @@ class MPs_Recent_Activity extends WP_Widget {
 		$instance['description'] = $new_instance['description'] ? 1 : 0;
 		$instance['date'] = $new_instance['date'] ? 1 : 0;
 		$instance['link'] = $new_instance['link'] ? 1 : 0;
-
+		
 		return $instance;
 	}
 	
@@ -194,21 +194,36 @@ class MPs_Recent_Activity extends WP_Widget {
 	 * 
 	 * Using the RESTful web service from TWFY to retrieve a list of MPs
 	 * 
+	 * @param bool $reset Whether or not to forcibly reset the cache
+	 * 
 	 * @return array An array of MPs with ID => name structure
 	 */
-	function get_mps() {
-		# @todo Add setting for API key
-		$xml = simplexml_load_file('http://theyworkforyou.com/api/getMPs?key=AMznwDBcpK3gCLwTTMC9PYHJ&output=xml');
+	function get_mps( $reset = false ) {
 		
-		$mps = array(); # for storage
+		# Grab cached data, if it exists
+		$mps = get_transient( 'twfy_mps_list' );
 		
-		foreach ( $xml->match as $m ){
-			$pid = (int) $m->person_id;
-			$pname = (string) $m->name;
-			$mps[$pid] = $pname;
+		# Get new TWFY data when there is none, or is we're forcibly resetting
+		if ( false === $mps or true == $reset ) {
+			
+			# @todo Add setting for API key
+			$xml = simplexml_load_file('http://theyworkforyou.com/api/getMPs?key=AMznwDBcpK3gCLwTTMC9PYHJ&output=xml');
+			
+			$mps = array(); # for storage
+			
+			foreach ( $xml->match as $m ){
+				$pid = (int) $m->person_id;
+				$pname = (string) $m->name;
+				$mps[$pid] = $pname;
+			}
+			
+			asort($mps);
+			
+			# Store the list in a transient, expire in 30 days
+			if ( !empty( $mps ) ) # No point if there's nothing to cache
+				set_transient( 'twfy_mps_list', $mps, 60*60*24*30 );
+		
 		}
-		
-		asort($mps);
 		
 		return $mps;
 	}
