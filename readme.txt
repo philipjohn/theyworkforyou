@@ -24,6 +24,10 @@ See http://codex.wordpress.org/Managing_Plugins#Installing_Plugins
 
 == Changelog ==
 
+= 0.4 =
+* Structural changes
+* Implemented API key setting
+
 = 0.3 =
 * Implemented caching of MP activity
 
