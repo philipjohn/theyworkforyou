@@ -190,9 +190,10 @@ class MPs_Recent_Activity extends WP_Widget {
 		$instance['date'] = $new_instance['date'] ? 1 : 0;
 		$instance['link'] = $new_instance['link'] ? 1 : 0;
 		
-		# Update the MP activity cache if we change the limit
+		# Update the MP activity cache if we change the MP or limit
 		if ( ! is_wp_error( $old_instance ) ) {
-			if ( $old_instance['limit'] !== absint( $new_instance['limit'] ) )
+			if ( ( $old_instance['mp'] !== absint( $new_instance['mp'] ) ) or
+				  ( $old_instance['limit'] !== absint( $new_instance['limit'] ) ) )
 				$mp = $this->get_mp( $instance['mp'], $instance['limit'], true );
 		}
 		
@@ -309,7 +310,7 @@ class MPs_Recent_Activity extends WP_Widget {
  *
  * Hooks into widgets_init to register our Class as a widget.
  *
- * @since 0.1
+ * @since 0.1.0
  *
  * @see WP_Widget
  * @link http://codex.wordpress.org/Widgets_API

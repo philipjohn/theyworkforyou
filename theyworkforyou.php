@@ -4,7 +4,7 @@ Plugin Name: TheyWorkForYou for Wordpress
 Plugin URI: http://philipjohn.me.uk/category/plugins/theyworkforyou/
 Description: Provides tools for bloggers based on mySociety's TheyWorkForYou.com
 Author: Philip John
-Version: 0.4
+Version: 0.4.1
 Author URI: http://philipjohn.me.uk
 
 Future features list;

@@ -22,7 +22,12 @@ Important: The original version of this plugin, built in December 2009 is far to
 
 See http://codex.wordpress.org/Managing_Plugins#Installing_Plugins
 
+Then, grab an API key from [TheyWorkForYou.com](http://www.theyworkforyou.com/api/key) and enter it at Settings > TheyWorkForYou.
+
 == Changelog ==
+
+= 0.4.1 =
+* Fixing bug where MP activity isn't refreshed when changed in the widget
 
 = 0.4 =
 * Structural changes
