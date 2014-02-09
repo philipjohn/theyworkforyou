@@ -26,9 +26,69 @@ Future features list;
     http://wtfpl.net
 */
 
+// Go away
+if ( !function_exists( 'add_action' ) ) {
+	die('Naughty naughty.');
+}
+
 /**
- * Get the MPs Recent Activity widget
+ * Load the Settings page up
  */
-require_once 'inc/mps_recent_activity.widget.php';
+require_once 'inc/settings.php';
+
+
+/**
+ * Only allow the configuration of widgets etc when an API key is set
+ */
+if ( $TWFY_Settings->get_setting('twfy_api_key') ) {
+	
+	/**
+	 * Get the MPs Recent Activity widget
+	 */
+	require_once 'inc/mps_recent_activity.widget.php';
+	
+} else {
+	
+	/**
+	 * Remind the user to add their API key
+	 * 
+	 * Adds an admin notice to to the dashboard, prompting users to enter their
+	 * API key. Not entering one disables widgets etc.
+	 * 
+	 * @since 0.4.0
+	 * 
+	 * @see admin_notices
+	 * @url http://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
+	 */
+	function twfy_admin_notice() {
+		?>
+	    <div class="updated">
+	        <p><?php _e( 'Uh-oh, you haven\'t entered your TheyWorkForYou API Key! Please <a href="options-general.php?page=twfy">do so</a>.' ); ?></p>
+	    </div>
+	    <?php
+	}
+	add_action( 'admin_notices', 'twfy_admin_notice' );
+	
+	
+} // twfy_api_key
+
+/**
+ * Add a settings link to the plugin page
+ * 
+ * Provides quicker and easier access to the settings page after activating the plugin.
+ * 
+ * @see plugin_action_links_{$plugin}
+ * @url http://codex.wordpress.org/Plugin_API/Filter_Reference/plugin_action_links_(plugin_file_name)
+ * 
+ * @param array $links Links for this plugin
+ * @return array Modified links for this plugin
+ */
+function twfy_add_settings_link( $links ) {
+	$settings_link = '<a href="options-general.php?page=twfy">Settings</a>';
+	array_push( $links, $settings_link );
+	return $links;
+}
+$plugin = plugin_basename( __FILE__ );
+add_filter( "plugin_action_links_$plugin", 'twfy_add_settings_link' );
 
 ?>

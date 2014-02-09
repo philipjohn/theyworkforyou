@@ -19,6 +19,16 @@
 class MPs_Recent_Activity extends WP_Widget {
 
 	/**
+	 * TWFY API key.
+	 * 
+	 * @since 0.4.0
+	 * 
+	 * @access private
+	 * @var string $api_key API key for TheyWorkForYou as provided in settings
+	 */
+	private $api_key = '';
+	
+	/**
 	 * Constructor.
 	 *
 	 * Registers the widget with the parent class.
@@ -29,11 +39,16 @@ class MPs_Recent_Activity extends WP_Widget {
 	 * @link http://codex.wordpress.org/Widgets_API
 	 */
 	function __construct() {
+		global $TWFY_Settings;
+		
 		parent::__construct(
 				'mps_recent_activity', // Base ID
 				__( 'MPs Recent Activity' ), // Name
 				array( 'description' => __( 'A widget showing the latest activity from a Member of Parliament' ), ) // Args
 		);
+		
+		// Get and set the API key
+		$this->api_key = $TWFY_Settings->get_setting('twfy_api_key');
 	}
 
 	/**
@@ -195,7 +210,7 @@ class MPs_Recent_Activity extends WP_Widget {
 	 * 
 	 * @return array An array of MPs with ID => name structure
 	 */
-	function get_mps( $reset = false ) {
+	private function get_mps( $reset = false ) {
 		
 		# Grab cached data, if it exists
 		$mps = get_transient( 'twfy_mps_list' );
@@ -204,7 +219,7 @@ class MPs_Recent_Activity extends WP_Widget {
 		if ( false === $mps or true == $reset ) {
 			
 			# @todo Add setting for API key
-			$xml = simplexml_load_file('http://theyworkforyou.com/api/getMPs?key=AMznwDBcpK3gCLwTTMC9PYHJ&output=xml');
+			$xml = simplexml_load_file('http://theyworkforyou.com/api/getMPs?key=' . $this->api_key . '&output=xml');
 			
 			$mps = array(); # for storage
 			
@@ -238,7 +253,7 @@ class MPs_Recent_Activity extends WP_Widget {
 	 * 
 	 * @return array An array containing the URL to the MP and the activity items
 	 */
-	function get_mp( $mp, $limit, $reset = false ) {
+	private function get_mp( $mp, $limit, $reset = false ) {
 		
 		# Grab cached data, it it exists
 		$activity = get_transient( 'twfy_mp_activity' );
@@ -246,8 +261,7 @@ class MPs_Recent_Activity extends WP_Widget {
 		# Get new TWFY data when there is none, or if we're forcibly resetting
 		if ( false === $activity or true == $reset ) {
 			
-			# @todo Add setting for API key
-			$xml = simplexml_load_file("http://www.theyworkforyou.com/api/getHansard?key=AMznwDBcpK3gCLwTTMC9PYHJ&output=xml&person=".$mp); // Load XML
+			$xml = simplexml_load_file('http://www.theyworkforyou.com/api/getHansard?key=' . $this->api_key . '&output=xml&person='.$mp); // Load XML
 			
 			$activity = array(
 					'url' => esc_url( (string) $xml->rows->match->speaker->url ),
