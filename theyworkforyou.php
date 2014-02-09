@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: TheyWorkForYou for Wordpress
-Plugin URI: http://philipjohn.co.uk/category/plugins/theyworkforyou/
+Plugin URI: http://philipjohn.me.uk/category/plugins/theyworkforyou/
 Description: Provides tools for bloggers based on mySociety's TheyWorkForYou.com
 Author: Philip John
-Version: 0.1b
-Author URI: http://philipjohn.co.uk
+Version: 0.1
+Author URI: http://philipjohn.me.uk
 
 Future features list;
  * Custom date format
@@ -14,17 +14,16 @@ Future features list;
 /*  Copyright 2009  Philip John Ltd  (email : talkto@philipjohn.co.uk)
 
     This program is free software; you can redistribute it and/or modify
-    it under the terms of the Affero General Public License as published
-    by the Affero Inc; either version 2 of the License, or (at your
-    option) any later version.
+    it under the terms of the Do What The Fuck You Want To Public License
+    (WTFPL).
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-    You should have received a copy of the Affero General Public License
-    along with this program; if not, see http://www.affero.org/oagpl.html
+    You should have received a copy of the Do What The Fuck You Want To 
+    Public License along with this program; if not, see
+    http://wtfpl.net
 */
 
 // The settings page for OL
