@@ -4,7 +4,7 @@ Plugin Name: TheyWorkForYou for Wordpress
 Plugin URI: http://philipjohn.me.uk/category/plugins/theyworkforyou/
 Description: Provides tools for bloggers based on mySociety's TheyWorkForYou.com
 Author: Philip John
-Version: 0.1
+Version: 0.2
 Author URI: http://philipjohn.me.uk
 
 Future features list;
@@ -189,6 +189,13 @@ class MPs_Recent_Activity extends WP_Widget {
 		return $instance;
 	}
 	
+	/**
+	 * Get the list of MPs from TWFY
+	 * 
+	 * Using the RESTful web service from TWFY to retrieve a list of MPs
+	 * 
+	 * @return array An array of MPs with ID => name structure
+	 */
 	function get_mps() {
 		# @todo Add setting for API key
 		$xml = simplexml_load_file('http://theyworkforyou.com/api/getMPs?key=AMznwDBcpK3gCLwTTMC9PYHJ&output=xml');
