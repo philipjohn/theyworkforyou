@@ -28,11 +28,21 @@ Future features list;
 
 /**
  * Adds MPs_Recent_Activity widget.
+ *
+ * @since 0.1.0
+ * @access public
  */
 class MPs_Recent_Activity extends WP_Widget {
 
 	/**
-	 * Register widget with WordPress.
+	 * Constructor.
+	 *
+	 * Registers the widget with the parent class.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @see WP_Widget::__construct()
+	 * @link http://codex.wordpress.org/Widgets_API
 	 */
 	function __construct() {
 		parent::__construct(
@@ -45,6 +55,8 @@ class MPs_Recent_Activity extends WP_Widget {
 	/**
 	 * Front-end display of widget.
 	 *
+	 * @since 0.1.0
+	 *
 	 * @see WP_Widget::widget()
 	 *
 	 * @param array $args     Widget arguments.
@@ -56,67 +68,69 @@ class MPs_Recent_Activity extends WP_Widget {
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
 			echo $args['before_title'] . $title . $args['after_title'];
-		
+
 		if ( ! empty( $instance['mp'] ) ) {
-			
+
 			$mp = $this->get_mp( $instance['mp'], $instance['limit'] );
-			
+
 			echo "<ul>\n";
 			foreach ( $mp['items'] as $a ) {
-				
+
 				echo '<li>';
-				
+
 				if ( $instance['date'] == 1 ) {
 					echo date( 'j M', $a['date'] ) . ': ';
 				}
-				
+
 				$url = esc_url( 'http://www.theyworkforyou.com' . $a['url'] );
 				echo "<a href=\"$url\">{$a['body']}</a>";
-				
+
 				if ( $instance['description'] == 1 ) {
 					echo '<br/>' . $a['description'];
 				}
-				
+
 				echo '</li>' . "\n";
-				
+
 			}
 			echo "</ul>\n";
-			
+
 			if ( $instance['link'] ) {
 				// Link back to the MPs page on TWFY
 				echo '<p>More from <a href="http://www.theyworkforyou.com' . $mp['url'] . '">TheyWorkForYou.com</a></p>';
 			}
 		}
-		
+
 		echo $args['after_widget'];
 	}
 
 	/**
 	 * Back-end widget form.
 	 *
+	 * @since 0.1.0
+	 *
 	 * @see WP_Widget::form()
 	 *
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		
+
 		$defaults = array(
-			'title' => __( 'MPs Recent Activity' ),
-			'mp' => 10777,
-			'description' => true,
-			'date' => true,
-			'limit' => 5,
-			'link' => true,
+				'title' => __( 'MPs Recent Activity' ),
+				'mp' => 10777,
+				'description' => true,
+				'date' => true,
+				'limit' => 5,
+				'link' => true,
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults );
-		
+
 		# Checkbox states
 		$description = $instance['description'] ? 'checked="checked"' : '';
 		$date = $instance['date'] ? 'checked="checked"' : '';
 		$link = $instance['link'] ? 'checked="checked"' : '';
-		
+
 		$mps = $this->get_mps();
-		
+
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
@@ -159,6 +173,8 @@ class MPs_Recent_Activity extends WP_Widget {
 	/**
 	 * Sanitize widget form values as they are saved.
 	 *
+	 * @since 0.1.0
+	 *
 	 * @see WP_Widget::update()
 	 *
 	 * @param array $new_instance Values just sent to be saved.
@@ -189,6 +205,8 @@ class MPs_Recent_Activity extends WP_Widget {
 	 * 
 	 * Using the RESTful web service from TWFY to retrieve a list of MPs
 	 * 
+	 * @since 0.2.0
+	 *
 	 * @param bool $reset Whether or not to forcibly reset the cache
 	 * 
 	 * @return array An array of MPs with ID => name structure
@@ -228,6 +246,8 @@ class MPs_Recent_Activity extends WP_Widget {
 	 * 
 	 * Uses the Transients API to store data for up to 24 hours
 	 * 
+	 * @since 0.3.0
+	 *
 	 * @param int $mp The Person ID of the Member of Parliament selected
 	 * @param int $limit The number of activity items to retrieve
 	 * @param bool $reset Whether to forcibly reset the cache
@@ -286,11 +306,19 @@ class MPs_Recent_Activity extends WP_Widget {
 	
 } // class MPs_Recent_Activity
 
-// register MPs_Recent_Activity widget
+/**
+ * Register MPs_Recent_Activity widget
+ *
+ * Hooks into widgets_init to register our Class as a widget.
+ *
+ * @since 0.1
+ *
+ * @see WP_Widget
+ * @link http://codex.wordpress.org/Widgets_API
+ */
 function register_mps_recent_activity_widget() {
 	register_widget( 'MPs_Recent_Activity' );
 }
 add_action( 'widgets_init', 'register_mps_recent_activity_widget' );
-
 
 ?>

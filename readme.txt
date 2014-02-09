@@ -4,7 +4,7 @@ Donate link: http://www.mysociety.org/donate
 Tags: theyworkforyou, democracy, politics
 Requires at least: 3.8.1
 Tested up to: 3.8.1
-Stable tag: 0.1
+Stable tag: trunk
 License: WTFPL
 License URI: http://wtfpl.net
 
@@ -25,7 +25,10 @@ See http://codex.wordpress.org/Managing_Plugins#Installing_Plugins
 == Changelog ==
 
 = 0.3 =
-* Implemented caching of TWFY data
+* Implemented caching of MP activity
+
+= 0.2 =
+* Implementing caching of MPs list
 
 = 0.1 =
 * Initial plugin, revived from 2009 version
