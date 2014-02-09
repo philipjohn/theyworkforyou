@@ -24,6 +24,9 @@ See http://codex.wordpress.org/Managing_Plugins#Installing_Plugins
 
 == Changelog ==
 
+= 0.3 =
+* Implemented caching of TWFY data
+
 = 0.1 =
 * Initial plugin, revived from 2009 version
 * MPs Recent Activity widget

@@ -4,7 +4,7 @@ Plugin Name: TheyWorkForYou for Wordpress
 Plugin URI: http://philipjohn.me.uk/category/plugins/theyworkforyou/
 Description: Provides tools for bloggers based on mySociety's TheyWorkForYou.com
 Author: Philip John
-Version: 0.2
+Version: 0.3
 Author URI: http://philipjohn.me.uk
 
 Future features list;
@@ -58,44 +58,33 @@ class MPs_Recent_Activity extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		
 		if ( ! empty( $instance['mp'] ) ) {
-			$xml = simplexml_load_file("http://www.theyworkforyou.com/api/getHansard?key=AMznwDBcpK3gCLwTTMC9PYHJ&output=xml&person=".$instance['mp']); // Load XML
+			
+			$mp = $this->get_mp( $instance['mp'], $instance['limit'] );
 			
 			echo "<ul>\n";
-			$i = 0; //counter for number of meetings
-			foreach ( $xml->rows->match as $match ) {
-				
-				if ( $i >= $instance['limit'] ) // don't list more than X meetings
-					break;
-				
-				$date = (string) $match->hdate;
-				$date = strtotime($date);
+			foreach ( $mp['items'] as $a ) {
 				
 				echo '<li>';
 				
 				if ( $instance['date'] == 1 ) {
-					echo date( 'j M', $date ) . ': ';
+					echo date( 'j M', $a['date'] ) . ': ';
 				}
 				
-				$url = wp_kses( (string) $match->listurl );
-				$url = esc_url( 'http://www.theyworkforyou.com' . $url );
-				$body = wp_kses( (string) $match->parent->body );
-				echo "<a href=\"$url\">$body</a>";
+				$url = esc_url( 'http://www.theyworkforyou.com' . $a['url'] );
+				echo "<a href=\"$url\">{$a['body']}</a>";
 				
 				if ( $instance['description'] == 1 ) {
-					$description = wp_kses( (string) $match->extract );
-					echo '<br/>' . $description;
+					echo '<br/>' . $a['description'];
 				}
 				
 				echo '</li>' . "\n";
 				
-				$i++; //increment the counter
 			}
 			echo "</ul>\n";
 			
 			if ( $instance['link'] ) {
 				// Link back to the MPs page on TWFY
-				$MPurl = esc_url( (string) $xml->rows->match->speaker->url );
-				echo '<p>More from <a href="http://www.theyworkforyou.com' . $MPurl . '">TheyWorkForYou.com</a></p>';
+				echo '<p>More from <a href="http://www.theyworkforyou.com' . $mp['url'] . '">TheyWorkForYou.com</a></p>';
 			}
 		}
 		
@@ -186,6 +175,12 @@ class MPs_Recent_Activity extends WP_Widget {
 		$instance['date'] = $new_instance['date'] ? 1 : 0;
 		$instance['link'] = $new_instance['link'] ? 1 : 0;
 		
+		# Update the MP activity cache if we change the limit
+		if ( ! is_wp_error( $old_instance ) ) {
+			if ( $old_instance['limit'] !== absint( $new_instance['limit'] ) )
+				$mp = $this->get_mp( $instance['mp'], $instance['limit'], true );
+		}
+		
 		return $instance;
 	}
 	
@@ -227,7 +222,68 @@ class MPs_Recent_Activity extends WP_Widget {
 		
 		return $mps;
 	}
-
+	
+	/**
+	 * Get the activity of a single MP
+	 * 
+	 * Uses the Transients API to store data for up to 24 hours
+	 * 
+	 * @param int $mp The Person ID of the Member of Parliament selected
+	 * @param int $limit The number of activity items to retrieve
+	 * @param bool $reset Whether to forcibly reset the cache
+	 * 
+	 * @return array An array containing the URL to the MP and the activity items
+	 */
+	function get_mp( $mp, $limit, $reset = false ) {
+		
+		# Grab cached data, it it exists
+		$activity = get_transient( 'twfy_mp_activity' );
+		
+		# Get new TWFY data when there is none, or if we're forcibly resetting
+		if ( false === $activity or true == $reset ) {
+			
+			# @todo Add setting for API key
+			$xml = simplexml_load_file("http://www.theyworkforyou.com/api/getHansard?key=AMznwDBcpK3gCLwTTMC9PYHJ&output=xml&person=".$mp); // Load XML
+			
+			$activity = array(
+					'url' => esc_url( (string) $xml->rows->match->speaker->url ),
+					'items' => array(),
+					);
+			$i = 0;
+			
+			foreach ( $xml->rows->match as $match ) {
+				
+				if ( $i >= $limit ) // don't list more than X meetings
+					break;
+				
+				$date = (string) $match->hdate;
+				$date = strtotime($date);
+				
+				$url = wp_kses( (string) $match->listurl, array() );
+				
+				$body = wp_kses( (string) $match->parent->body, array() );
+				
+				$description = wp_kses( (string) $match->extract, array() );
+				
+				$activity['items'][] = array(
+					'date' => $date,
+					'url' => $url,
+					'body' => $body,
+					'description' => $description
+					);
+				
+				$i++; //increment the counter
+			}
+			
+			# Store the list in a transient, expire in 24 hours
+			if ( ! empty( $activity ) )
+				set_transient( 'twfy_mp_activity', $activity, 60*60*24 );
+			
+		}
+		
+		return $activity;
+	}
+	
 } // class MPs_Recent_Activity
 
 // register MPs_Recent_Activity widget
