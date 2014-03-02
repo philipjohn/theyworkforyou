@@ -4,7 +4,7 @@ Plugin Name: TheyWorkForYou for Wordpress
 Plugin URI: http://philipjohn.me.uk/category/plugins/theyworkforyou/
 Description: Provides tools for bloggers based on mySociety's TheyWorkForYou.com
 Author: Philip John
-Version: 0.4.2
+Version: 0.5
 Author URI: http://philipjohn.me.uk
 
 Future features list;
@@ -41,6 +41,11 @@ require_once 'inc/settings.php';
  * Only allow the configuration of widgets etc when an API key is set
  */
 if ( $TWFY_Settings->get_setting('twfy_api_key') ) {
+	
+	/**
+	 * Load up our API wrapper
+	 */
+	require_once 'inc/api.php';
 	
 	/**
 	 * Get the MPs Recent Activity widget
