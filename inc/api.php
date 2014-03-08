@@ -99,6 +99,7 @@ Class TWFY_API {
 		switch ( $method ) {
 			
 			case "convertURL":
+			case "getConstituency":
 				$cached = set_transient( $cache_name, $data, strtotime('+1 month') );
 				break;
 				
@@ -245,6 +246,16 @@ Class TWFY_API {
 		
 	}
 	
+	function is_postcode( $postcode ) {
+		
+		$postcode = strtoupper(str_replace(' ','',$postcode));
+		
+		if ( preg_match("/^[A-Z]{1,2}[0-9]{2,3}[A-Z]{2}$/",$postcode) || preg_match("/^[A-Z]{1,2}[0-9]{1}[A-Z]{1}[0-9]{1}[A-Z]{2}$/",$postcode) || preg_match("/^GIR0[A-Z]{2}$/",$postcode) )
+			return true;
+			
+		return false;
+	}
+	
 	/**
 	 * Converts a parliament.uk Hansard URL into a TheyWorkForYou one, if possible.
 	 * 
@@ -272,6 +283,31 @@ Class TWFY_API {
 			$data = self::get( $api_call );
 			self::set_cache( 'converURL', $cache_name, $data );
 		
+		endif;
+		
+		// @todo We need to check if it is actually a JSON string
+		return json_decode( $data );
+		
+	}
+	
+	function getConstituency( $search ) {
+		
+		$search = esc_html( $search );
+		
+		$params = ( self::is_postcode( $search ) ) ? array( 'postcode' => $search ) : $params = array( 'name' => $search );
+		
+		$api_call = self::generate_api_call( 'getConstituency', $params );
+		
+		$cache_name = self::generate_cache_id( $api_call );
+		
+		if ( $cache = self::get_cache( $cache_name ) ):
+			$data = $cache;
+		
+		else :
+			
+			$data = self::get( $api_call );
+			self::set_cache( 'getConstituency', $cache_name, $data );
+			
 		endif;
 		
 		// @todo We need to check if it is actually a JSON string
