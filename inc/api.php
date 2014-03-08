@@ -335,4 +335,84 @@ Class TWFY_API {
 		
 	}
 	
+	/**
+	 * Fetch a list of UK Parliament constituencies.
+	 * 
+	 * @since 0.5.0
+	 * 
+	 * @see http://www.theyworkforyou.com/api/docs/getConstituencies
+	 * 
+	 * @param string $search Either a postcode or a name to search on
+	 * @return object Constituency data - see TWFY API reference
+	 */
+	function getConstituencies( $search = '', $date = null ) {
+		
+		$params = array();
+		
+		if ( ! is_null( $date ) )
+			$params['date'] = esc_attr( $date );
+		
+		if ( ! empty( $search ) )
+			$params['search'] = esc_html( $search );
+		
+		$api_call = self::generate_api_call( 'getConstituencies', $params );
+		error_log($api_call);
+		$cache_name = self::generate_cache_id( $api_call );
+		error_log($cache_name);
+		if ( $cache = self::get_cache( $cache_name ) ):
+			$data = $cache;
+		
+		else :
+			
+			$data = self::get( $api_call );
+			error_log($data);
+			self::set_cache( 'getConstituencies', $cache_name, $data );
+			
+		endif;
+		
+		// @todo We need to check if it is actually a JSON string
+		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
+		
+	}
+	
+	/**
+	 * Fetch a list of UK Parliament constituencies.
+	 * 
+	 * @since 0.5.0
+	 * 
+	 * @see http://www.theyworkforyou.com/api/docs/getConstituencies
+	 * 
+	 * @param string $search Either a postcode or a name to search on
+	 * @return object Constituency data - see TWFY API reference
+	 */
+	function getConstituencies( $search = '', $date = null ) {
+		
+		$params = array();
+		
+		if ( ! is_null( $date ) )
+			$params['date'] = esc_attr( $date );
+		
+		if ( ! empty( $search ) )
+			$params['search'] = esc_html( $search );
+		
+		$api_call = self::generate_api_call( 'getConstituencies', $params );
+		error_log($api_call);
+		$cache_name = self::generate_cache_id( $api_call );
+		error_log($cache_name);
+		if ( $cache = self::get_cache( $cache_name ) ):
+			$data = $cache;
+		
+		else :
+			
+			$data = self::get( $api_call );
+			error_log($data);
+			self::set_cache( 'getConstituencies', $cache_name, $data );
+			
+		endif;
+		
+		// @todo We need to check if it is actually a JSON string
+		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
+		
+	}
+	
 }
