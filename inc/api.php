@@ -98,8 +98,11 @@ Class TWFY_API {
 		
 		switch ( $method ) {
 			
+			// @todo Add filters for the time limit on each method
 			case "convertURL":
 			case "getConstituency":
+			case "getConstituencies":
+			case "getPerson":
 				$cached = set_transient( $cache_name, $data, strtotime('+1 month') );
 				break;
 				
@@ -376,37 +379,28 @@ Class TWFY_API {
 	}
 	
 	/**
-	 * Fetch a list of UK Parliament constituencies.
+	 * Fetch a particular person.
 	 * 
 	 * @since 0.5.0
 	 * 
-	 * @see http://www.theyworkforyou.com/api/docs/getConstituencies
+	 * @see http://www.theyworkforyou.com/api/docs/getPerson
 	 * 
-	 * @param string $search Either a postcode or a name to search on
-	 * @return object Constituency data - see TWFY API reference
+	 * @param string $id A TWFY Person ID
+	 * @return object Person data - see TWFY API reference
 	 */
-	function getConstituencies( $search = '', $date = null ) {
+	function getPerson( $id ) {
 		
-		$params = array();
+		$api_call = self::generate_api_call( 'getPerson', array( 'id' => intval( $id ) ) );
 		
-		if ( ! is_null( $date ) )
-			$params['date'] = esc_attr( $date );
-		
-		if ( ! empty( $search ) )
-			$params['search'] = esc_html( $search );
-		
-		$api_call = self::generate_api_call( 'getConstituencies', $params );
-		error_log($api_call);
 		$cache_name = self::generate_cache_id( $api_call );
-		error_log($cache_name);
+		
 		if ( $cache = self::get_cache( $cache_name ) ):
 			$data = $cache;
 		
 		else :
 			
 			$data = self::get( $api_call );
-			error_log($data);
-			self::set_cache( 'getConstituencies', $cache_name, $data );
+			self::set_cache( 'getPerson', $cache_name, $data );
 			
 		endif;
 		
