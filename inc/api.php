@@ -246,6 +246,16 @@ Class TWFY_API {
 		
 	}
 	
+	/**
+	 * Validate a postcode.
+	 * 
+	 * Does a simple(!) regex to see if something is a UK postcode
+	 * 
+	 * @since 0.5.0
+	 * 
+	 * @param string $postcode String to check
+	 * @return boolean
+	 */
 	function is_postcode( $postcode ) {
 		
 		$postcode = strtoupper(str_replace(' ','',$postcode));
@@ -290,6 +300,16 @@ Class TWFY_API {
 		
 	}
 	
+	/**
+	 * Fetch a UK Parliament constituency.
+	 * 
+	 * @since 0.5.0
+	 * 
+	 * @see http://www.theyworkforyou.com/api/docs/getConstituency
+	 * 
+	 * @param string $search Either a postcode or a name to search on
+	 * @return object Constituency data - see TWFY API reference
+	 */
 	function getConstituency( $search ) {
 		
 		$search = esc_html( $search );
