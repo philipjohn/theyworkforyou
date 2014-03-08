@@ -409,4 +409,47 @@ Class TWFY_API {
 		
 	}
 	
+	/**
+	 * Fetch a particular MP.
+	 * 
+	 * @since 0.5.0
+	 * 
+	 * @see http://www.theyworkforyou.com/api/docs/getMP
+	 * 
+	 * @param array $options An array of possible parameters. See TWFY API docs
+	 * @return object MP data - see TWFY API docs
+	 */
+	function getMP( $options = array() ) {
+		
+		if ( isset( $options['postcode'] ) && ! self::is_postcode( $options['postcode'] ) )
+			return new WP_Error( 'invalid_postcode', __('Sorry, that\'s an invalid postcode') );
+		
+		if ( isset( $options['constituency'] ) )
+			$options['constituency'] = esc_html( $options['constituency'] );
+		
+		if ( isset( $options['id'] ) && ! intval( $options['id'] ) )
+			return new WP_Error( 'invalid_mp_id', __('Dude, that\'s not a valid ID... sort it out, yeah?') );
+		
+		// @todo Figure out what always_return does and check that
+		// @todo What is the 'extra' parameter all about?
+		
+		$api_call = self::generate_api_call( 'getMP', $options );
+		
+		$cache_name = self::generate_cache_id( $api_call );
+		
+		if ( $cache = self::get_cache( $cache_name ) ):
+			$data = $cache;
+		
+		else :
+			
+			$data = self::get( $api_call );
+			self::set_cache( 'getMP', $cache_name, $data );
+			
+		endif;
+		
+		// @todo We need to check if it is actually a JSON string
+		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
+		
+	}
+	
 }
