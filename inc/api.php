@@ -452,4 +452,45 @@ Class TWFY_API {
 		
 	}
 	
+	/**
+	 * Fetch extra information for a particular person.
+	 * 
+	 * @since 0.5.0
+	 * 
+	 * @see http://www.theyworkforyou.com/api/docs/getMPInfo
+	 * 
+	 * @param array $options An array of possible parameters. See TWFY API docs
+	 * @return object MP data - see TWFY API docs
+	 */
+	function getMPInfo( $id, $fields = array() ) {
+		
+		$params = array();
+		
+		$params['id'] = intval( $id );
+		
+		if ( ! empty( $fields ) ) {
+			foreach ( $fields as $field ) {
+				$params['fields'] .= '';
+			}
+		}
+		
+		$api_call = self::generate_api_call( 'getMPInfo', $options );
+		
+		$cache_name = self::generate_cache_id( $api_call );
+		
+		if ( $cache = self::get_cache( $cache_name ) ):
+			$data = $cache;
+		
+		else :
+			
+			$data = self::get( $api_call );
+			self::set_cache( 'getMPInfo', $cache_name, $data );
+			
+		endif;
+		
+		// @todo We need to check if it is actually a JSON string
+		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
+		
+	}
+	
 }
