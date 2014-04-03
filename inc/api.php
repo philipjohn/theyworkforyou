@@ -359,16 +359,15 @@ Class TWFY_API {
 			$params['search'] = esc_html( $search );
 
 		$api_call = self::generate_api_call( 'getConstituencies', $params );
-		error_log($api_call);
+
 		$cache_name = self::generate_cache_id( $api_call );
-		error_log($cache_name);
+
 		if ( $cache = self::get_cache( $cache_name ) ):
 			$data = $cache;
 
 		else :
 
 			$data = self::get( $api_call );
-			error_log($data);
 			self::set_cache( 'getConstituencies', $cache_name, $data );
 
 		endif;
