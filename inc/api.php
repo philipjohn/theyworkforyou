@@ -200,7 +200,7 @@ Class TWFY_API {
 				'getPerson',
 				'getMP',
 				'getMPinfo',
-				'getMPsinfo',
+				'getMPsInfo',
 				'getMPs',
 				'getLord',
 				'getLords',
@@ -244,7 +244,7 @@ Class TWFY_API {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$data = curl_exec($ch);
 		curl_close($ch);
-		
+
 		return $data;
 		
 	}
@@ -283,21 +283,21 @@ Class TWFY_API {
 	function convertURL( $url ) {
 		
 		$url = esc_url( $url );
-		
+
 		$api_call = self::generate_api_call( 'convertURL', array( 'url' => $url ) );
-		
+
 		$cache_name = self::generate_cache_id( $api_call );
-		
-		if ( $cache = self::get_cache( $cache_name ) ):	
+
+		if ( $cache = self::get_cache( $cache_name ) ):
 			$data = $cache;
-		
+
 		else :
-		
+
 			$data = self::get( $api_call );
 			self::set_cache( 'converURL', $cache_name, $data );
-		
+
 		endif;
-		
+
 		// @todo We need to check if it is actually a JSON string
 		return json_decode( $data );
 		
@@ -318,21 +318,21 @@ Class TWFY_API {
 		$search = esc_html( $search );
 		
 		$params = ( self::is_postcode( $search ) ) ? array( 'postcode' => $search ) : $params = array( 'name' => $search );
-		
+
 		$api_call = self::generate_api_call( 'getConstituency', $params );
-		
+
 		$cache_name = self::generate_cache_id( $api_call );
-		
+
 		if ( $cache = self::get_cache( $cache_name ) ):
 			$data = $cache;
-		
+
 		else :
-			
+
 			$data = self::get( $api_call );
 			self::set_cache( 'getConstituency', $cache_name, $data );
-			
+
 		endif;
-		
+
 		// @todo We need to check if it is actually a JSON string
 		return json_decode( $data );
 		
@@ -357,22 +357,22 @@ Class TWFY_API {
 		
 		if ( ! empty( $search ) )
 			$params['search'] = esc_html( $search );
-		
+
 		$api_call = self::generate_api_call( 'getConstituencies', $params );
 		error_log($api_call);
 		$cache_name = self::generate_cache_id( $api_call );
 		error_log($cache_name);
 		if ( $cache = self::get_cache( $cache_name ) ):
 			$data = $cache;
-		
+
 		else :
-			
+
 			$data = self::get( $api_call );
 			error_log($data);
 			self::set_cache( 'getConstituencies', $cache_name, $data );
-			
+
 		endif;
-		
+
 		// @todo We need to check if it is actually a JSON string
 		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
 		
@@ -491,6 +491,57 @@ Class TWFY_API {
 		// @todo We need to check if it is actually a JSON string
 		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
 		
+	}
+
+	/**
+	 * Fetch extra information for a particular group of MPs.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @see http://www.theyworkforyou.com/api/docs/getMPsInfo
+	 *
+	 * @param array $ids An array of Person IDs
+	 * @param array $options An array of possible parameters. See TWFY API docs
+	 * @return object MP data - see TWFY API docs
+	 */
+	function getMPsInfo( $ids, $fields = array() ) {
+
+		$params = array();
+
+		// Need an ID parameter
+		$params['id'] = array();
+		foreach ( $ids as $id ) {
+
+			$params['id'][] = intval( $id );
+
+		}
+
+		// IDs needs to be a comma-separated
+		$params['id'] = implode( ',', $params['id'] );
+
+		if ( ! empty( $fields ) ) {
+			foreach ( $fields as $field ) {
+				$params['fields'] .= '';
+			}
+		}
+
+		$api_call = self::generate_api_call( 'getMPsInfo', $params );
+
+		$cache_name = self::generate_cache_id( $api_call );
+
+		if ( $cache = self::get_cache( $cache_name ) ):
+			$data = $cache;
+
+		else :
+
+			$data = self::get( $api_call );
+			self::set_cache( 'getMPsInfo', $cache_name, $data );
+
+		endif;
+
+		// @todo We need to check if it is actually a JSON string
+		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
+
 	}
 	
 }
