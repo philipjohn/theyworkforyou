@@ -230,11 +230,26 @@ Class TWFY_API {
 	 * 
 	 * @since 0.5.0
 	 * 
-	 * @param string $api_call The TWFY API URL
+	 * @param string $method The TWFY API method
+	 * @param array $params An array of parameters to send along
 	 * 
 	 * @return string JSON response
 	 */
-	function get( $api_call ) {
+	function get( $method, $params ) {
+
+		$api_call = self::generate_api_call( $method, $params );
+
+		$cache_name = self::generate_cache_id( $api_call );
+
+		if ( $cache = self::get_cache( $cache_name ) ):
+			$data = $cache;
+
+		else :
+
+			$data = self::get( $api_call );
+			self::set_cache( $method, $cache_name, $data );
+
+		endif;
 		
 		// @todo Do we allow for other formats?
 		
@@ -245,7 +260,8 @@ Class TWFY_API {
 		$data = curl_exec($ch);
 		curl_close($ch);
 
-		return $data;
+		// @todo We need to check if it is actually a JSON string
+		return json_decode( $data );
 		
 	}
 	
@@ -284,22 +300,9 @@ Class TWFY_API {
 		
 		$url = esc_url( $url );
 
-		$api_call = self::generate_api_call( 'convertURL', array( 'url' => $url ) );
+		$params = array( 'url' => $url );
 
-		$cache_name = self::generate_cache_id( $api_call );
-
-		if ( $cache = self::get_cache( $cache_name ) ):
-			$data = $cache;
-
-		else :
-
-			$data = self::get( $api_call );
-			self::set_cache( 'converURL', $cache_name, $data );
-
-		endif;
-
-		// @todo We need to check if it is actually a JSON string
-		return json_decode( $data );
+		return self::get( __FUNCTION__, $params );
 		
 	}
 	
@@ -319,22 +322,7 @@ Class TWFY_API {
 		
 		$params = ( self::is_postcode( $search ) ) ? array( 'postcode' => $search ) : $params = array( 'name' => $search );
 
-		$api_call = self::generate_api_call( 'getConstituency', $params );
-
-		$cache_name = self::generate_cache_id( $api_call );
-
-		if ( $cache = self::get_cache( $cache_name ) ):
-			$data = $cache;
-
-		else :
-
-			$data = self::get( $api_call );
-			self::set_cache( 'getConstituency', $cache_name, $data );
-
-		endif;
-
-		// @todo We need to check if it is actually a JSON string
-		return json_decode( $data );
+		return self::get( __FUNCTION__, $params );
 		
 	}
 	
@@ -358,22 +346,7 @@ Class TWFY_API {
 		if ( ! empty( $search ) )
 			$params['search'] = esc_html( $search );
 
-		$api_call = self::generate_api_call( 'getConstituencies', $params );
-
-		$cache_name = self::generate_cache_id( $api_call );
-
-		if ( $cache = self::get_cache( $cache_name ) ):
-			$data = $cache;
-
-		else :
-
-			$data = self::get( $api_call );
-			self::set_cache( 'getConstituencies', $cache_name, $data );
-
-		endif;
-
-		// @todo We need to check if it is actually a JSON string
-		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
+		return self::get( __FUNCTION__, $params );
 		
 	}
 	
@@ -388,23 +361,10 @@ Class TWFY_API {
 	 * @return object Person data - see TWFY API reference
 	 */
 	function getPerson( $id ) {
-		
-		$api_call = self::generate_api_call( 'getPerson', array( 'id' => intval( $id ) ) );
-		
-		$cache_name = self::generate_cache_id( $api_call );
-		
-		if ( $cache = self::get_cache( $cache_name ) ):
-			$data = $cache;
-		
-		else :
-			
-			$data = self::get( $api_call );
-			self::set_cache( 'getPerson', $cache_name, $data );
-			
-		endif;
-		
-		// @todo We need to check if it is actually a JSON string
-		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
+
+		$params = array( 'id' => intval( $id ) );
+
+		return self::get( __FUNCTION__, $params );
 		
 	}
 	
@@ -431,23 +391,8 @@ Class TWFY_API {
 		
 		// @todo Figure out what always_return does and check that
 		// @todo What is the 'extra' parameter all about?
-		
-		$api_call = self::generate_api_call( 'getMP', $options );
-		
-		$cache_name = self::generate_cache_id( $api_call );
-		
-		if ( $cache = self::get_cache( $cache_name ) ):
-			$data = $cache;
-		
-		else :
-			
-			$data = self::get( $api_call );
-			self::set_cache( 'getMP', $cache_name, $data );
-			
-		endif;
-		
-		// @todo We need to check if it is actually a JSON string
-		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
+
+		return self::get( __FUNCTION__, $options );
 		
 	}
 	
@@ -473,22 +418,7 @@ Class TWFY_API {
 			}
 		}
 
-		$api_call = self::generate_api_call( 'getMPinfo', $params );
-
-		$cache_name = self::generate_cache_id( $api_call );
-		
-		if ( $cache = self::get_cache( $cache_name ) ):
-			$data = $cache;
-
-		else :
-
-			$data = self::get( $api_call );
-			self::set_cache( 'getMPInfo', $cache_name, $data );
-			
-		endif;
-		
-		// @todo We need to check if it is actually a JSON string
-		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
+		return self::get( __FUNCTION__, $params );
 		
 	}
 
@@ -524,22 +454,7 @@ Class TWFY_API {
 			}
 		}
 
-		$api_call = self::generate_api_call( 'getMPsInfo', $params );
-
-		$cache_name = self::generate_cache_id( $api_call );
-
-		if ( $cache = self::get_cache( $cache_name ) ):
-			$data = $cache;
-
-		else :
-
-			$data = self::get( $api_call );
-			self::set_cache( 'getMPsInfo', $cache_name, $data );
-
-		endif;
-
-		// @todo We need to check if it is actually a JSON string
-		return json_decode( mb_convert_encoding( $data, "UTF-8" ) );
+		return self::get( __FUNCTION__, $params );
 
 	}
 	
