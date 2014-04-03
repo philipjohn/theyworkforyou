@@ -134,11 +134,11 @@ Class TWFY_API {
 			return false;
 		
 		$url = 'http://www.theyworkforyou.com/api/';
-		
+
 		$url .= $method;
-		
+
 		$url .= '?key=' . $this->api_key;
-		
+
 		if ( ! empty( $params ) ):
 		
 			foreach ( $params as $param => $value ) {
@@ -147,11 +147,11 @@ Class TWFY_API {
 				$value = urlencode( $value );
 				
 				$url .= "&$param=$value";
-				
+
 			}
 		
 		endif;
-		
+
 		return $url;
 		
 	}
@@ -473,16 +473,16 @@ Class TWFY_API {
 				$params['fields'] .= '';
 			}
 		}
-		
-		$api_call = self::generate_api_call( 'getMPInfo', $options );
-		
+
+		$api_call = self::generate_api_call( 'getMPinfo', $params );
+
 		$cache_name = self::generate_cache_id( $api_call );
 		
 		if ( $cache = self::get_cache( $cache_name ) ):
 			$data = $cache;
-		
+
 		else :
-			
+
 			$data = self::get( $api_call );
 			self::set_cache( 'getMPInfo', $cache_name, $data );
 			
