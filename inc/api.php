@@ -626,5 +626,26 @@ Class TWFY_API {
 		return self::get( __FUNCTION__, $params );
 
 	}
+
+	/**
+	 * Returns geometry information for constituencies.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @see http://www.theyworkforyou.com/api/docs/getGeometry
+	 *
+	 * @param array $name Constituency name
+	 * @return object Bounding box
+	 */
+	function getGeometry( $name ) {
+
+		$params = array();
+
+		if ( isset( $name ) )
+			$params['name'] = esc_attr( $name );
+
+		return self::get( __FUNCTION__, $params );
+
+	}
 	
 }
