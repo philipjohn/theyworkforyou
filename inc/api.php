@@ -457,5 +457,31 @@ Class TWFY_API {
 		return self::get( __FUNCTION__, $params );
 
 	}
+
+	/**
+	 * Fetch a list of MPs.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @see http://www.theyworkforyou.com/api/docs/getMPs
+	 *
+	 * @param array $options Associative array of parameters
+	 * @return object MPs data - see TWFY API docs
+	 */
+	function getMPs( $options = array() ) {
+
+		if ( isset( $options['party'] ) )
+			$params['party'] = wp_kses( $options['party'] );
+
+		if ( isset( $options['date'] ) )
+			$params['date'] = esc_attr( $options['date'] );
+
+		if ( isset( $options['search'] ) )
+			$params['search'] = wp_kses( $options['search'] );
+
+		return self::get( __FUNCTION__, $params );
+
+	}
+
 	
 }
