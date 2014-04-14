@@ -551,5 +551,30 @@ Class TWFY_API {
 		return self::get( __FUNCTION__, $options );
 
 	}
+
+	/**
+	 * Fetch a list of MLAs.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @see http://www.theyworkforyou.com/api/docs/getMLAs
+	 *
+	 * @param array $options Associative array of parameters
+	 * @return object MLAs data - see TWFY API docs
+	 */
+	function getMLAs( $options = array() ) {
+
+		if ( isset( $options['party'] ) )
+			$params['party'] = wp_kses( $options['party'] );
+
+		if ( isset( $options['date'] ) )
+			$params['date'] = esc_attr( $options['date'] );
+
+		if ( isset( $options['search'] ) )
+			$params['search'] = wp_kses( $options['search'] );
+
+		return self::get( __FUNCTION__, $params );
+
+	}
 	
 }
