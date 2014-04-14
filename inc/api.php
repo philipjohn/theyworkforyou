@@ -483,5 +483,23 @@ Class TWFY_API {
 
 	}
 
+	/**
+	 * Fetch a particular Lord.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @see http://www.theyworkforyou.com/api/docs/getLord
+	 *
+	 * @param array $id Person ID for the particular Lord you want
+	 * @return object MP data - see TWFY API docs
+	 */
+	function getLord( $id = null ) {
+
+		if ( ! intval( $id ) )
+			return new WP_Error( 'invalid_id', __('Sorry, that\'s not a number!') );
+
+		return self::get( __FUNCTION__, $options );
+
+	}
 	
 }
