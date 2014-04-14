@@ -576,5 +576,30 @@ Class TWFY_API {
 		return self::get( __FUNCTION__, $params );
 
 	}
+
+	/**
+	 * Fetch a particular MSP.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @see http://www.theyworkforyou.com/api/docs/getMSP
+	 *
+	 * @param array $options An array of possible parameters. See TWFY API docs
+	 * @return object MSP data - see TWFY API docs
+	 */
+	function getMSP( $options = array() ) {
+
+		if ( isset( $options['postcode'] ) && ! self::is_postcode( $options['postcode'] ) )
+			return new WP_Error( 'invalid_postcode', __('Sorry, that\'s an invalid postcode') );
+
+		if ( isset( $options['constituency'] ) )
+			$options['constituency'] = esc_html( $options['constituency'] );
+
+		if ( isset( $options['id'] ) && ! intval( $options['id'] ) )
+			return new WP_Error( 'invalid_mla_id', __('Dude, that\'s not a valid ID... sort it out, yeah?') );
+
+		return self::get( __FUNCTION__, $options );
+
+	}
 	
 }
