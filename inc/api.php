@@ -647,5 +647,26 @@ Class TWFY_API {
 		return self::get( __FUNCTION__, $params );
 
 	}
+
+	/**
+	 * Returns KML file for a UK Parliament constituency.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @see http://www.theyworkforyou.com/api/docs/getBoundary
+	 *
+	 * @param array $name Constituency name
+	 * @return file KML file
+	 */
+	function getBoundary( $name ) {
+
+		$params = array();
+
+		if ( isset( $name ) )
+			$params['name'] = esc_attr( $name );
+
+		return self::get( __FUNCTION__, $params );
+
+	}
 	
 }
