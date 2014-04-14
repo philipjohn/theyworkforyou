@@ -367,33 +367,33 @@ Class TWFY_API {
 		return self::get( __FUNCTION__, $params );
 		
 	}
-	
+
 	/**
 	 * Fetch a particular MP.
-	 * 
+	 *
 	 * @since 0.5.0
-	 * 
+	 *
 	 * @see http://www.theyworkforyou.com/api/docs/getMP
-	 * 
+	 *
 	 * @param array $options An array of possible parameters. See TWFY API docs
 	 * @return object MP data - see TWFY API docs
 	 */
 	function getMP( $options = array() ) {
-		
+
 		if ( isset( $options['postcode'] ) && ! self::is_postcode( $options['postcode'] ) )
 			return new WP_Error( 'invalid_postcode', __('Sorry, that\'s an invalid postcode') );
-		
+
 		if ( isset( $options['constituency'] ) )
 			$options['constituency'] = esc_html( $options['constituency'] );
-		
+
 		if ( isset( $options['id'] ) && ! intval( $options['id'] ) )
 			return new WP_Error( 'invalid_mp_id', __('Dude, that\'s not a valid ID... sort it out, yeah?') );
-		
+
 		// @todo Figure out what always_return does and check that
 		// @todo What is the 'extra' parameter all about?
 
 		return self::get( __FUNCTION__, $options );
-		
+
 	}
 	
 	/**
@@ -524,6 +524,31 @@ Class TWFY_API {
 			$params['search'] = wp_kses( $options['search'] );
 
 		return self::get( __FUNCTION__, $params );
+
+	}
+
+	/**
+	 * Fetch a particular MLA.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @see http://www.theyworkforyou.com/api/docs/getMLA
+	 *
+	 * @param array $options An array of possible parameters. See TWFY API docs
+	 * @return object MLA data - see TWFY API docs
+	 */
+	function getMLA( $options = array() ) {
+
+		if ( isset( $options['postcode'] ) && ! self::is_postcode( $options['postcode'] ) )
+			return new WP_Error( 'invalid_postcode', __('Sorry, that\'s an invalid postcode') );
+
+		if ( isset( $options['constituency'] ) )
+			$options['constituency'] = esc_html( $options['constituency'] );
+
+		if ( isset( $options['id'] ) && ! intval( $options['id'] ) )
+			return new WP_Error( 'invalid_mla_id', __('Dude, that\'s not a valid ID... sort it out, yeah?') );
+
+		return self::get( __FUNCTION__, $options );
 
 	}
 	
