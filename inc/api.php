@@ -491,7 +491,7 @@ Class TWFY_API {
 	 * @see http://www.theyworkforyou.com/api/docs/getLord
 	 *
 	 * @param array $id Person ID for the particular Lord you want
-	 * @return object MP data - see TWFY API docs
+	 * @return object Lord data - see TWFY API docs
 	 */
 	function getLord( $id = null ) {
 
@@ -499,6 +499,31 @@ Class TWFY_API {
 			return new WP_Error( 'invalid_id', __('Sorry, that\'s not a number!') );
 
 		return self::get( __FUNCTION__, $options );
+
+	}
+
+	/**
+	 * Fetch a list of Lords.
+	 *
+	 * @since 0.5.0
+	 *
+	 * @see http://www.theyworkforyou.com/api/docs/getLords
+	 *
+	 * @param array $options Associative array of parameters
+	 * @return object Lords data - see TWFY API docs
+	 */
+	function getLords( $options = array() ) {
+
+		if ( isset( $options['party'] ) )
+			$params['party'] = wp_kses( $options['party'] );
+
+		if ( isset( $options['date'] ) )
+			$params['date'] = esc_attr( $options['date'] );
+
+		if ( isset( $options['search'] ) )
+			$params['search'] = wp_kses( $options['search'] );
+
+		return self::get( __FUNCTION__, $params );
 
 	}
 	
