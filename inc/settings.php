@@ -25,7 +25,8 @@ class TWFY_Settings extends WordPress_SimpleSettings {
 		// Actions
 		add_action('admin_menu', array($this, 'menu') );
 
-		register_activation_hook(__FILE__, array($this, 'activate') );
+		$this->add_setting( 'twfy_api_key', '' );
+		//register_activation_hook(__FILE__, array($this, 'activate') );
 	}
 
 	function menu () {

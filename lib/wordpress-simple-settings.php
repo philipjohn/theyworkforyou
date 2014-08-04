@@ -84,7 +84,7 @@ abstract class WordPress_SimpleSettings {
 		if( strtolower($type) == 'array' && ! empty($value) ) {
 			$value = (array)explode(";", $value);
 		}
-
+var_dump($setting);
 		return apply_filters($this->prefix . '_get_setting', $value, $setting);
 	}
 
