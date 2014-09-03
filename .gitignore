@@ -2,3 +2,7 @@
 .buildpath
 .project
 .settings
+
+# SVN
+*.svn
+svn
