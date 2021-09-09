@@ -4,12 +4,12 @@ Plugin Name: TheyWorkForYou for Wordpress
 Plugin URI: http://philipjohn.me.uk/category/plugins/theyworkforyou/
 Description: Provides tools for bloggers based on mySociety's TheyWorkForYou.com
 Author: Philip John
-Version: 0.4.2
 Author URI: http://philipjohn.me.uk
+Version: 0.4.2
 
 Future features list;
  * Custom date format
- 
+
 */
 /*  Copyright 2009  Philip John Ltd  (email : talkto@philipjohn.co.uk)
 
@@ -21,7 +21,7 @@ Future features list;
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-    You should have received a copy of the Do What The Fuck You Want To 
+    You should have received a copy of the Do What The Fuck You Want To
     Public License along with this program; if not, see
     http://wtfpl.net
 */
@@ -41,22 +41,22 @@ require_once 'inc/settings.php';
  * Only allow the configuration of widgets etc when an API key is set
  */
 if ( $TWFY_Settings->get_setting('twfy_api_key') ) {
-	
+
 	/**
 	 * Get the MPs Recent Activity widget
 	 */
 	require_once 'inc/mps_recent_activity.widget.php';
-	
+
 } else {
-	
+
 	/**
 	 * Remind the user to add their API key
-	 * 
+	 *
 	 * Adds an admin notice to to the dashboard, prompting users to enter their
 	 * API key. Not entering one disables widgets etc.
-	 * 
+	 *
 	 * @since 0.4.0
-	 * 
+	 *
 	 * @see admin_notices
 	 * @url http://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
 	 */
@@ -68,18 +68,18 @@ if ( $TWFY_Settings->get_setting('twfy_api_key') ) {
 	    <?php
 	}
 	add_action( 'admin_notices', 'twfy_admin_notice' );
-	
-	
+
+
 } // twfy_api_key
 
 /**
  * Add a settings link to the plugin page
- * 
+ *
  * Provides quicker and easier access to the settings page after activating the plugin.
- * 
+ *
  * @see plugin_action_links_{$plugin}
  * @url http://codex.wordpress.org/Plugin_API/Filter_Reference/plugin_action_links_(plugin_file_name)
- * 
+ *
  * @param array $links Links for this plugin
  * @return array Modified links for this plugin
  */
