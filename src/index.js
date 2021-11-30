@@ -18,21 +18,32 @@ import './style.scss';
  * Internal dependencies
  */
 import Edit from './edit';
-import save from './save';
+
+/**
+ * Set up our block registration settings.
+ */
+const settings = {
+	/**
+	 * @see ./edit.js
+	 */
+	edit: Edit,
+
+	save: () => null, // Use view.php instead.
+
+	attributes: {
+		currentMP: {
+			type: 'int',
+		}
+	},
+	supports: {
+		html: false,
+		align: [ 'left', 'center', 'right', 'wide', 'full' ],
+	},
+};
 
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( 'theyworkforyou/mps-recent-activity', {
-	/**
-	 * @see ./edit.js
-	 */
-	edit: Edit,
-
-	/**
-	 * @see ./save.js
-	 */
-	save,
-} );
+registerBlockType( 'theyworkforyou/mps-recent-activity', settings );

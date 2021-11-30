@@ -4,6 +4,13 @@
  * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
  */
 import { __ } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
+import {
+	Placeholder,
+	SelectControl,
+	Spinner
+} from '@wordpress/components';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * React hook that is used to mark the block wrapper element.
@@ -21,18 +28,57 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 import './editor.scss';
 
-/**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
- *
- * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#edit
- *
- * @return {WPElement} Element to render.
- */
-export default function Edit() {
-	return (
-		<p { ...useBlockProps() }>
-			{ __( 'Create Block – hello from the editor!', 'ps-recent-activity' ) }
-		</p>
-	);
+class Edit extends Component {
+
+	/**
+	 * Constructor.
+	 */
+	constructor() {
+		super( ...arguments );
+		this.state = {
+			listofMPs: null,
+		}
+	}
+
+	componentDidMount() {
+		apiFetch( { path: '/twfy/v1/mps' } ).then( response =>
+			this.setState( { listofMPs: response.listofMPs, initialUpdate: true } )
+		);
+	}
+
+	MPsForSelect = listofMPs => {
+		return [
+			{
+				label: __('Select an MP'),
+				value: null,
+			},
+			...Object.values( listofMPs ).map( mp => {
+				return {
+					label: mp.name,
+					value: mp.person_id,
+				}
+			} )
+		];
+	}
+
+	render() {
+		<Fragment { ...useBlockProps() }>
+			<Placeholder>
+				{ ! listofMPs && <Spinner /> }
+				{ listofMPs && !! listofMPs.length && (
+					<SelectControl
+						label={ __( 'MP' ) }
+						value={ currentMP }
+						options={ this.MPsForSelect( listofMPs ) }
+						onChange={ _currentMP => setAttributes( { currentMP: _currentMP } ) }
+						/>
+				) }
+				{ listofMPs && ! listofMPs.length && (
+					{ __( 'No MPs list found.' ) }
+				) }
+			</Placeholder>
+		</Fragment>
+	}
 }
+
+export default Edit;
