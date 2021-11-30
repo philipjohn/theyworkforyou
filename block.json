@@ -1,0 +1,17 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "theyworkforyou/mps-recent-activity",
+	"version": "0.1.0",
+	"title": "MPs Recent Activity",
+	"category": "widgets",
+	"icon": "list-view",
+	"description": "A block showing the latest activity from a Member of Parliament.",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "theyworkforyou",
+	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:./build/index.css",
+	"style": "file:./build/style-index.css"
+}

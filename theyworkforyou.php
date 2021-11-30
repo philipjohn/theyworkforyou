@@ -6,6 +6,7 @@ Description: Provides tools for bloggers based on mySociety's TheyWorkForYou.com
 Author: Philip John
 Author URI: http://philipjohn.me.uk
 Version: 0.4.2
+Textdomain: theyworkforyou
 
 Future features list;
  * Custom date format
@@ -32,6 +33,11 @@ if ( !function_exists( 'add_action' ) ) {
 }
 
 /**
+ * Define the plugin dir for use elsewhere.
+ */
+define( 'TWFY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+
+/**
  * Load the Settings page up
  */
 require_once 'inc/settings.php';
@@ -46,6 +52,11 @@ if ( $TWFY_Settings->get_setting('twfy_api_key') ) {
 	 * Get the MPs Recent Activity widget
 	 */
 	require_once 'inc/mps_recent_activity.widget.php';
+
+	/**
+	 * Register the TWFY block.
+	 */
+	require_once 'inc/mps_recent_activity.block.php';
 
 } else {
 

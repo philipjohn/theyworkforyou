@@ -6,3 +6,7 @@
 # SVN
 *.svn
 svn
+
+# NPM
+node_modules
+build
