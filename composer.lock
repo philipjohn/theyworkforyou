@@ -1,0 +1,67 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "296f0d1ad657820f384614e1247253d6",
+    "packages": [
+        {
+            "name": "openpolitics/twfyapi",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openpolitics/twfyapi.git",
+                "reference": "a76ec40ac963bbbdff175147f52989b88ee17e48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openpolitics/twfyapi/zipball/a76ec40ac963bbbdff175147f52989b88ee17e48",
+                "reference": "a76ec40ac963bbbdff175147f52989b88ee17e48",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RubenArakelyan\\TWFYAPI\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ruben Arakelyan",
+                    "email": "ruben@ra.me.uk",
+                    "homepage": "https://ruben.am/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP wrappers for the TheyWorkForYou.com and OpenAustralia.org.au APIs",
+            "homepage": "https://github.com/rubenarakelyan/twfyapi",
+            "keywords": [
+                "api",
+                "openaustralia",
+                "php",
+                "theyworkforyou"
+            ],
+            "support": {
+                "source": "https://github.com/openpolitics/twfyapi/tree/v2.0.2"
+            },
+            "time": "2016-11-27T19:18:52+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
+}

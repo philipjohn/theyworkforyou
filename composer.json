@@ -1,0 +1,10 @@
+{
+    "name": "openpolitics/theyworkforyou",
+    "description": "Provides tools for bloggers based on mySociety's TheyW",
+    "type": "project",
+    "license": "GPLv2-or-later",
+    "minimum-stability": "stable",
+    "require": {
+        "openpolitics/twfyapi": "^2.0"
+    }
+}

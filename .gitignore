@@ -10,3 +10,4 @@ svn
 # NPM
 node_modules
 build
+/vendor/
