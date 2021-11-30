@@ -1,10 +1,5 @@
 <?php
 /**
- * @internal never define functions inside callbacks.
- * these functions could be run multiple times; this would result in a fatal error.
- */
- 
-/**
  * Add the submenu page.
  */
 function twfy_options_page() {

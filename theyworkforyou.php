@@ -19,7 +19,20 @@ if ( !function_exists( 'add_action' ) ) {
  */
 define( 'TWFY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
+/**
+ * Add a settings page.
+ */
 require_once 'inc/admin/settings.php';
+
+/**
+ * Load the TWFY API library.
+ */
+require 'vendor/openpolitics/twfyapi/src/twfyapi.php';
+
+/**
+ * Set up our little API for grabbing data.
+ */
+require_once 'inc/data.php';
 
 /**
  * Register the TWFY block.
