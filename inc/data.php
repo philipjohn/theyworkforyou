@@ -1,5 +1,11 @@
 <?php
 
+namespace TheyWorkForYou;
+use TWFYAPI;
+
+error_log(var_export(['pj-debug',__FILE__,__LINE__,class_exists('TWFYAPI')],true));
+error_log(var_export(['pj-debug',__FILE__,__LINE__,new TWFYAPI('foobar')],true));
+
 class TWFY_WP_API {
 
     private $twfy_api;
@@ -10,7 +16,7 @@ class TWFY_WP_API {
             return;
         }
 
-        $this->twfy_api = new \TWFYAPI( $options['twfy_api_key'] );
+        // $this->twfy_api = new TWFYAPI( $options['twfy_api_key'] );
     }
 
     function init() {
@@ -34,4 +40,4 @@ class TWFY_WP_API {
 }
 
 $twfy_wp_api = new TWFY_WP_API();
-add_action( 'rest_api_init', [ $twfy_wp_api, 'init' ] );
+// add_action( 'rest_api_init', [ $twfy_wp_api, 'init' ] );

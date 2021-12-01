@@ -53,11 +53,12 @@ add_action( 'admin_init', 'twfy_settings_init' );
 function twfy_api_key_cb( $args ) {
     // Get the value of the setting we've registered with register_setting()
     $options = get_option( 'twfy_settings' );
+    $api_key = (isset( $options['twfy_api_key' ] ) ) ? $options['twfy_api_key' ] : '';
     ?>
     <input
         type="text"
         name="twfy_settings[<?php echo esc_attr( $args['label_for'] ); ?>]"
-        value="<?php echo esc_attr( $options['twfy_api_key'] ); ?>" />
+        value="<?php echo esc_attr( $api_key ); ?>" />
     <?php
 }
 

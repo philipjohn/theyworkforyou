@@ -9,6 +9,8 @@ Version: 1.0.0
 Textdomain: theyworkforyou
 */
 
+namespace TheyWorkForYou;
+
 // Go away
 if ( !function_exists( 'add_action' ) ) {
 	die('Naughty naughty.');
@@ -27,7 +29,7 @@ require_once 'inc/admin/settings.php';
 /**
  * Load the TWFY API library.
  */
-require 'vendor/openpolitics/twfyapi/src/twfyapi.php';
+require_once TWFY_PLUGIN_DIR . 'vendor/openpolitics/twfyapi/src/twfyapi.php';
 
 /**
  * Set up our little API for grabbing data.
