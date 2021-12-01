@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "openpolitics/twfyapi",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openpolitics/twfyapi.git",
-                "reference": "a76ec40ac963bbbdff175147f52989b88ee17e48"
+                "reference": "63760a90b77f78de5da18636a6d2142141803704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openpolitics/twfyapi/zipball/a76ec40ac963bbbdff175147f52989b88ee17e48",
-                "reference": "a76ec40ac963bbbdff175147f52989b88ee17e48",
+                "url": "https://api.github.com/repos/openpolitics/twfyapi/zipball/63760a90b77f78de5da18636a6d2142141803704",
+                "reference": "63760a90b77f78de5da18636a6d2142141803704",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "RubenArakelyan\\TWFYAPI\\": "src/"
+                    "OpenPolitics\\TWFYAPI\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -36,13 +36,13 @@
             "authors": [
                 {
                     "name": "Ruben Arakelyan",
-                    "email": "ruben@ra.me.uk",
-                    "homepage": "https://ruben.am/",
+                    "email": "ruben@arakelyan.uk",
+                    "homepage": "https://ruben.arakelyan.uk/",
                     "role": "Developer"
                 }
             ],
             "description": "PHP wrappers for the TheyWorkForYou.com and OpenAustralia.org.au APIs",
-            "homepage": "https://github.com/rubenarakelyan/twfyapi",
+            "homepage": "https://github.com/openpolitics/twfyapi",
             "keywords": [
                 "api",
                 "openaustralia",
@@ -50,9 +50,9 @@
                 "theyworkforyou"
             ],
             "support": {
-                "source": "https://github.com/openpolitics/twfyapi/tree/v2.0.2"
+                "source": "https://github.com/openpolitics/twfyapi/tree/v2.0.3"
             },
-            "time": "2016-11-27T19:18:52+00:00"
+            "time": "2021-12-01T16:11:43+00:00"
         }
     ],
     "packages-dev": [],
