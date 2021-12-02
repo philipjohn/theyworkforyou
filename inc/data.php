@@ -62,8 +62,7 @@ class TWFY_WP_API {
     function get_mps() {
 
         // Grab MPs from the cache to save API requests.
-        $cache_key = 'get_mps';
-        $mps = \wp_cache_get( $cache_key, $cache_group );
+        $mps = \wp_cache_get( __FUNCTION__, $this->cache_group );
 
         if ( ! $mps ) {
             $api_response = $this->twfy_api->query( 'getMPs', array( 'output' => 'json' ) );
