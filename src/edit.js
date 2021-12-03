@@ -72,7 +72,7 @@ class Edit extends Component {
 						{ ! listofMPs && <Spinner /> }
 						{ listofMPs && !! listofMPs.length && (
 							<SelectControl
-								label={ __( 'MP' ) }
+								label={ __( 'Select an MP' ) }
 								value={ currentMP }
 								options={ this.MPsForSelect( listofMPs ) }
 								onChange={ _currentMP => setAttributes( { currentMP: _currentMP } ) }

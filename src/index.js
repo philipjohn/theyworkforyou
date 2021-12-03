@@ -23,8 +23,8 @@ import Edit from './edit';
  * Set up our block registration settings.
  */
 const settings = {
-	apiVersion: 2,
-	
+	apiVersion: 1,
+
 	/**
 	 * @see ./edit.js
 	 */
