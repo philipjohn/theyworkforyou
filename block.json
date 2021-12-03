@@ -10,6 +10,11 @@
 	"supports": {
 		"html": false
 	},
+	"attributes": {
+		"currentMP": {
+			"type": "integer"
+		}
+	},
 	"textdomain": "theyworkforyou",
 	"editorScript": "file:./build/index.js",
 	"editorStyle": "file:./build/index.css",

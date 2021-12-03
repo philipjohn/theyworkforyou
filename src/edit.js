@@ -9,6 +9,7 @@ import {
 	Spinner
 } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
+import ServerSideRender from '@wordpress/server-side-render';
 
 /**
  * React hook that is used to mark the block wrapper element.
@@ -60,26 +61,31 @@ class Edit extends Component {
 	}
 
 	render() {
-		const { attributes, setAttributes } = this.props;
+		const { attributes, setAttributes, isSelected } = this.props;
 		const { listofMPs } = this.state;
 		const { currentMP } = attributes;
 
 		return (
 			<Fragment>
-				<Placeholder>
-					{ ! listofMPs && <Spinner /> }
-					{ listofMPs && !! listofMPs.length && (
-						<SelectControl
-							label={ __( 'MP' ) }
-							value={ currentMP }
-							options={ this.MPsForSelect( listofMPs ) }
-							onChange={ _currentMP => setAttributes( { currentMP: _currentMP } ) }
-							/>
-					) }
-					{ listofMPs && ! listofMPs.length && (
-						__( 'No MPs list found.' )
-					) }
-				</Placeholder>
+				{ isSelected && (
+					<Placeholder>
+						{ ! listofMPs && <Spinner /> }
+						{ listofMPs && !! listofMPs.length && (
+							<SelectControl
+								label={ __( 'MP' ) }
+								value={ currentMP }
+								options={ this.MPsForSelect( listofMPs ) }
+								onChange={ _currentMP => setAttributes( { currentMP: _currentMP } ) }
+								/>
+						) }
+						{ listofMPs && ! listofMPs.length && (
+							__( 'No MPs list found.' )
+						) }
+					</Placeholder>
+				) }
+				<ServerSideRender
+					block="theyworkforyou/mps-recent-activity"
+					attributes={ attributes } />
 			</Fragment>
 		)
 	}
