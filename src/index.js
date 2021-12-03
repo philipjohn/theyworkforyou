@@ -35,6 +35,10 @@ const settings = {
 	attributes: {
 		currentMP: {
 			type: 'int',
+		},
+		noOfEntries: {
+			type: "integer",
+			default: 5
 		}
 	},
 	supports: {

@@ -6,7 +6,9 @@ import { Component, Fragment } from '@wordpress/element';
 import {
 	Placeholder,
 	SelectControl,
-	Spinner
+	Spinner,
+	PanelBody,
+	RangeControl
 } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 import ServerSideRender from '@wordpress/server-side-render';
@@ -17,7 +19,7 @@ import ServerSideRender from '@wordpress/server-side-render';
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls } from '@wordpress/block-editor';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -63,7 +65,7 @@ class Edit extends Component {
 	render() {
 		const { attributes, setAttributes, isSelected } = this.props;
 		const { listofMPs } = this.state;
-		const { currentMP } = attributes;
+		const { currentMP, noOfEntries } = attributes;
 
 		return (
 			<Fragment>
@@ -86,6 +88,19 @@ class Edit extends Component {
 				<ServerSideRender
 					block="theyworkforyou/mps-recent-activity"
 					attributes={ attributes } />
+				
+				<InspectorControls>
+					<PanelBody title={ __('MPs Recent Activity') }>
+						<RangeControl
+							label={ __('Number of items to show') }
+							value={ noOfEntries }
+							onChange={ _noOfEntries => setAttributes( { noOfEntries: _noOfEntries } ) }
+							min={ 1 }
+							max={ 100 }
+							required
+							/>
+					</PanelBody>
+				</InspectorControls>
 			</Fragment>
 		)
 	}

@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
-	"apiVersion": 2,
+	"apiVersion": 1,
 	"name": "theyworkforyou/mps-recent-activity",
 	"version": "0.1.0",
 	"title": "MPs Recent Activity",
@@ -13,6 +13,10 @@
 	"attributes": {
 		"currentMP": {
 			"type": "integer"
+		},
+		"noOfEntries": {
+			"type": "integer",
+			"default": 5
 		}
 	},
 	"textdomain": "theyworkforyou",

@@ -32,7 +32,7 @@ function twfy_render_callback( $attributes ) {
     if ( ! $output ) {
 
         $mp      = $attributes['currentMP'];
-        $limit   = isset( $attributes['limit'] ) ? $attributes['limit'] : 5;
+        $limit   = isset( $attributes['noOfEntries'] ) ? $attributes['noOfEntries'] : 5;
         $api     = new TWFY_WP_API();
         $mp_info = $api->get_mp_by_person_id( $mp );
         $hansard = $api->get_hansard_by_person_id( $mp, [ 'limit' => $limit ] );
