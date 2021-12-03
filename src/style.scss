@@ -6,7 +6,21 @@
  */
 
 .wp-block-theyworkforyou-mps-recent-activity {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+
+	.mps-activity {
+		padding-left: 0;
+	}
+
+	.item {
+		padding-bottom: 1em;
+		list-style-type: none;
+	}
+
+	.date {
+		font-style: italic;
+	}
+
+	.context {
+		font-weight: bold;
+	}
 }

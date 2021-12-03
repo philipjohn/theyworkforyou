@@ -73,8 +73,17 @@ class TWFY_WP_API {
         return $mps;
     }
 
-    function get_hansard_by_person_id( $id ) {
-        return json_decode( $this->twfy_api->query( 'getHansard', array( 'person' => $id, 'output' => 'json' ) ) );
+    function get_hansard_by_person_id( $id, $args = [] ) {
+        $args = wp_parse_args( $args, [
+            'limit' => 5,
+            'order' => 'd',
+        ] );
+        return json_decode( $this->twfy_api->query( 'getHansard', [
+            'person' => $id,
+            'num'    => $args['limit'],
+            'order'  => $args['order'],
+            'output' => 'json',
+        ] ) );
     }
 
     function get_mp_by_person_id( $id ) {

@@ -12,7 +12,7 @@ Textdomain: theyworkforyou
 namespace TheyWorkForYou;
 
 // Go away
-if ( !function_exists( 'add_action' ) ) {
+if ( ! function_exists( 'add_action' ) ) {
 	die('Naughty naughty.');
 }
 
