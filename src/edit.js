@@ -37,14 +37,21 @@ class Edit extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
-			listofMPs: []
+			listofMPs: [],
+			activity: []
 		}
 	}
 
 	componentDidMount() {
+		const { currentMP, noOfEntries } = this.props.attributes;
+
 		apiFetch( { path: '/twfy/v1/get_mps_names_for_dropdown' } ).then( response =>
 			this.setState( { listofMPs: response, initialUpdate: true } )
 		);
+		apiFetch( { path: '/twfy/v1/get_mp_details_for_activity/' + currentMP + '/' + noOfEntries } )
+			.then( response =>
+				this.setState( { activity: response, initialUpdate: true } )
+			);
 	}
 
 	MPsForSelect = listofMPs => {
@@ -64,7 +71,7 @@ class Edit extends Component {
 
 	render() {
 		const { attributes, setAttributes, isSelected } = this.props;
-		const { listofMPs } = this.state;
+		const { listofMPs, activity } = this.state;
 		const { currentMP, noOfEntries } = attributes;
 
 		return (
@@ -85,9 +92,25 @@ class Edit extends Component {
 						) }
 					</Placeholder>
 				) }
-				<ServerSideRender
-					block="theyworkforyou/mps-recent-activity"
-					attributes={ attributes } />
+				
+				<div className="wp-block-theyworkforyou-mps-recent-activity">
+					<h2>Recent activity by { activity.fullName } MP</h2>
+					<ul className="mps-activity">
+						{ activity.items.map( item => (
+							<li className="item">
+								<span class="date">
+									<a href="{ item.url }">
+										{ item.date }
+										{ item.time }
+									</a>
+									in
+									<span class="context">{ item.context }</span>
+								</span><br/>
+								<span class="body">{ item.body }</span>
+							</li>
+						) ) }
+					</ul>
+				</div>
 				
 				<InspectorControls>
 					<PanelBody title={ __('MPs Recent Activity') }>
