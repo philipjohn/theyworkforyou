@@ -28,7 +28,23 @@ class TWFY_WP_API {
                 'permission_callback' => '__return_true',
             ]
         );
-    
+        \register_rest_route(
+            'twfy/v1',
+            '/get_mp_details_for_activity/(?P<id>[\d]+)/(?P<count>[\d]+)',
+            [
+                'methods'             => \WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'rest_get_mp_details_for_activity' ],
+                'permission_callback' => '__return_true',
+                'args'                => [
+                    'id' => [
+                        'validate_callback' => 'is_numeric',
+                    ],
+                    'count' => [
+                        'validate_callback' => 'is_numeric',
+                    ],
+                ]
+            ]
+        );    
     }
 
     function get_mps_names_for_dropdown() {
@@ -57,6 +73,24 @@ class TWFY_WP_API {
         }
 
         return \rest_ensure_response( $mps );
+    }
+
+    function get_mp_details_for_activity( $request ) {
+        $id    = (int) $request['id'];
+        $count = (int) $request['count'];
+        
+        $mp      = $this->get_mp_by_person_id( $id );
+        $hansard = $this->trim_hansard_for_block_list(
+            $this->get_hansard_by_person_id( $id, [ 'limit' => $count ] )->rows
+        );
+        
+        return [ 'fullName' => $mp[0]->full_name, 'items' => $hansard ];
+    }
+
+    function rest_get_mp_details_for_activity( $request ) {
+        return \rest_ensure_response(
+            $this->get_mp_details_for_activity( $request )
+        );
     }
     
     function get_mps() {
@@ -88,6 +122,27 @@ class TWFY_WP_API {
 
     function get_mp_by_person_id( $id ) {
         return json_decode( $this->twfy_api->query( 'getMP', array( 'id' => $id, 'output' => 'json' ) ) );
+    }
+
+    function trim_hansard_for_block_list( $hansard_rows ) {
+
+        $trimmed = [];
+
+        for ( $i = 0; $i < count( $hansard_rows ); $i++ ) {
+            $trimmed[ $i ] = [
+                'url'     => esc_url( 'https://theyworkforyou.com' . $hansard_rows[ $i ]->listurl ),
+                'date'    => date( 'D, jS F Y', strtotime( $hansard_rows[ $i ]->hdate ) ),
+                'context' => esc_html( $hansard_rows[ $i ]->parent->body ),
+                'body'    => esc_html( strip_tags( $hansard_rows[ $i ]->extract ) ),
+            ]; 
+            
+            if ( isset( $hansard_rows[ $i ]->htime ) ) {
+                $trimmed[ $i ]['time'] = date( 'g:ia', strtotime( $hansard_rows[ $i ]->htime ) );
+            }
+        }
+
+        return $trimmed;
+
     }
 
 }

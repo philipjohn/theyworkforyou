@@ -34,33 +34,32 @@ function twfy_render_callback( $attributes ) {
         $mp      = $attributes['currentMP'];
         $limit   = isset( $attributes['noOfEntries'] ) ? $attributes['noOfEntries'] : 5;
         $api     = new TWFY_WP_API();
-        $mp_info = $api->get_mp_by_person_id( $mp );
-        $hansard = $api->get_hansard_by_person_id( $mp, [ 'limit' => $limit ] );
+        $activity = $api->get_mp_details_for_activity( [ 'id' => $mp, 'count' => $limit ] );
 
         ob_start();
         ?>
         <div class="wp-block-theyworkforyou-mps-recent-activity">
-            <h2>Recent activity by <?php echo esc_html( $mp_info[0]->full_name ); ?> MP</h2>
+            <h2>Recent activity by <?php echo esc_html( $activity['fullName'] ); ?> MP</h2>
             <ul class="mps-activity">
                 <?php
 
-                foreach ( $hansard->rows as $item ) {
+                foreach ( $activity['items'] as $item ) {
                     ?>
                     <li class="item">
                         <span class="date">
-                            <a href="https://theyworkforyou.com<?php echo esc_attr( $item->listurl ); ?>">
+                            <a href="<?php echo esc_attr( $item['url'] ); ?>">
                                 <?php
-                                    echo date( 'D, jS F Y', strtotime( $item->hdate ) );
+                                    echo esc_html( $item['date'] );
 
-                                    if ( isset( $item->htime ) ) {
-                                        echo ' at ' . date( 'g:ia', strtotime( $item->htime ) );
+                                    if ( isset( $item['time'] ) ) {
+                                        echo ' at ' . esc_html( $item['time'] );
                                     }
                                 ?>
                             </a>
                             in
-                            <span class="context"><?php echo esc_html( $item->parent->body ); ?></span>
-                        </span><br>
-                        <span class="body"><?php echo esc_html( strip_tags( $item->extract ) ); ?></span>
+                            <span class="context"><?php echo esc_html( $item['context'] ); ?></span>
+                        </span><br/>
+                        <span class="body"><?php echo esc_html( $item['body'] ); ?></span>
                     </li>
                     <?php
                 }
