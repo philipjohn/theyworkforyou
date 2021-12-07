@@ -38,20 +38,34 @@ class Edit extends Component {
 		super( ...arguments );
 		this.state = {
 			listofMPs: [],
+			currentMP: 0,
 			activity: []
 		}
 	}
 
 	componentDidMount() {
 		const { currentMP, noOfEntries } = this.props.attributes;
+		this.setState( { currentMP: currentMP } );
 
 		apiFetch( { path: '/twfy/v1/get_mps_names_for_dropdown' } ).then( response =>
-			this.setState( { listofMPs: response, initialUpdate: true } )
+			this.setState( { listofMPs: response } )
 		);
 		apiFetch( { path: '/twfy/v1/get_mp_details_for_activity/' + currentMP + '/' + noOfEntries } )
 			.then( response =>
-				this.setState( { activity: response, initialUpdate: true } )
+				this.setState( { activity: response } )
 			);
+	}
+
+	componentDidUpdate( prevProps ) {
+		const { currentMP, noOfEntries } = this.props.attributes;
+
+		if ( prevProps.attributes.currentMP !== currentMP ) {
+			this.setState( { currentMP: currentMP } );
+			apiFetch( { path: '/twfy/v1/get_mp_details_for_activity/' + currentMP + '/' + noOfEntries } )
+				.then( response =>
+					this.setState( { activity: response } )
+				);
+		}
 	}
 
 	MPsForSelect = listofMPs => {
