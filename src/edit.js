@@ -38,14 +38,12 @@ class Edit extends Component {
 		super( ...arguments );
 		this.state = {
 			listofMPs: [],
-			currentMP: 0,
 			activity: []
 		}
 	}
 
 	componentDidMount() {
 		const { currentMP, noOfEntries } = this.props.attributes;
-		this.setState( { currentMP: currentMP } );
 
 		apiFetch( { path: '/twfy/v1/get_mps_names_for_dropdown' } ).then( response =>
 			this.setState( { listofMPs: response } )
@@ -58,13 +56,29 @@ class Edit extends Component {
 
 	componentDidUpdate( prevProps ) {
 		const { currentMP, noOfEntries } = this.props.attributes;
+		const { activity } = this.state;
 
+		// If the user has changed the MP, grab the new MP details and update state.
 		if ( prevProps.attributes.currentMP !== currentMP ) {
-			this.setState( { currentMP: currentMP } );
 			apiFetch( { path: '/twfy/v1/get_mp_details_for_activity/' + currentMP + '/' + noOfEntries } )
 				.then( response =>
 					this.setState( { activity: response } )
 				);
+		}
+
+		// If the user changes the number of entries, update state accordingly.
+		if ( prevProps.attributes.noOfEntries !== noOfEntries ) {
+
+			// If we're only removing items, just modify the array, rather than query the API.
+			if ( prevProps.attributes.noOfEntries > noOfEntries ) {
+				activity.items = activity.items.splice( 0, noOfEntries );
+				this.setState( { activity: activity } );
+			} else {
+				apiFetch( { path: '/twfy/v1/get_mp_details_for_activity/' + currentMP + '/' + noOfEntries } )
+					.then( response =>
+						this.setState( { activity: response } )
+					);
+			}
 		}
 	}
 
