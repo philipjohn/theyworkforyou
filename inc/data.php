@@ -130,6 +130,7 @@ class TWFY_WP_API {
 
         for ( $i = 0; $i < count( $hansard_rows ); $i++ ) {
             $trimmed[ $i ] = [
+                'id'      => esc_attr( $hansard_rows[ $i ]->gid ),
                 'url'     => esc_url( 'https://theyworkforyou.com' . $hansard_rows[ $i ]->listurl ),
                 'date'    => date( 'D, jS F Y', strtotime( $hansard_rows[ $i ]->hdate ) ),
                 'context' => esc_html( $hansard_rows[ $i ]->parent->body ),

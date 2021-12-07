@@ -96,17 +96,17 @@ class Edit extends Component {
 				<div className="wp-block-theyworkforyou-mps-recent-activity">
 					<h2>Recent activity by { activity.fullName } MP</h2>
 					<ul className="mps-activity">
-						{ activity.items.map( item => (
-							<li className="item">
-								<span class="date">
+						{ activity.items && activity.items.map( item => (
+							<li className="item" key={ item.id }>
+								<span className="date">
 									<a href="{ item.url }">
 										{ item.date }
-										{ item.time }
+										{ item.time ? <span className="time"> at { item.time }</span> : null }
 									</a>
-									in
-									<span class="context">{ item.context }</span>
+									&nbsp;in&nbsp;
+									<span className="context">{ item.context }</span>
 								</span><br/>
-								<span class="body">{ item.body }</span>
+								<span className="body">{ item.body }</span>
 							</li>
 						) ) }
 					</ul>
