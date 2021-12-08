@@ -12,6 +12,7 @@ import {
 } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 import PropTypes from 'prop-types';
+
 /**
  * React hook that is used to mark the block wrapper element.
  * It provides all the necessary props like the class name.
@@ -19,6 +20,11 @@ import PropTypes from 'prop-types';
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
 import { InspectorControls } from '@wordpress/block-editor';
+
+/**
+ * Grab any custom components we are using in this block.
+ */
+import ActivityList from './components/activity-list';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -88,26 +94,7 @@ const Edit = ( props ) => {
 				</Placeholder>
 			) }
 			
-			{ activity && ( 
-				<div className="wp-block-theyworkforyou-mps-recent-activity">
-					<h2>Recent activity by { activity.fullName } MP</h2>
-					<ul className="mps-activity">
-						{ activity.items && activity.items.map( item => (
-							<li className="item" key={ item.id }>
-								<span className="date">
-									<a href="{ item.url }">
-										{ item.date }
-										{ item.time ? <span className="time"> at { item.time }</span> : null }
-									</a>
-									&nbsp;in&nbsp;
-									<span className="context">{ item.context }</span>
-								</span><br/>
-								<span className="body">{ item.body }</span>
-							</li>
-						) ) }
-					</ul>
-				</div>
-			) }
+			{ activity && ( <ActivityList activity={ activity } /> ) }
 			
 			<InspectorControls>
 				<PanelBody title={ __('MPs Recent Activity') }>
