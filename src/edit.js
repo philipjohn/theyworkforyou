@@ -11,8 +11,7 @@ import {
 	RangeControl
 } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
-import ServerSideRender from '@wordpress/server-side-render';
-
+import PropTypes from 'prop-types';
 /**
  * React hook that is used to mark the block wrapper element.
  * It provides all the necessary props like the class name.
@@ -112,7 +111,7 @@ class Edit extends Component {
 								label={ __( 'Select an MP' ) }
 								value={ currentMP }
 								options={ this.MPsForSelect( listofMPs ) }
-								onChange={ _currentMP => setAttributes( { currentMP: _currentMP } ) }
+								onChange={ _currentMP => setAttributes( { currentMP: parseInt( _currentMP ) } ) }
 								/>
 						) }
 						{ listofMPs && ! listofMPs.length && (
@@ -155,6 +154,15 @@ class Edit extends Component {
 			</Fragment>
 		)
 	}
+}
+
+Edit.propTypes = {
+	attributes: PropTypes.shape(
+		{
+			currentMP: PropTypes.number,
+			noOfEntries: PropTypes.number
+		}
+	).isRequired
 }
 
 export default Edit;

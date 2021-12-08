@@ -16,7 +16,8 @@
 	"dependencies": {
 		"@wordpress/block-editor": "^8.0.7",
 		"@wordpress/blocks": "^11.1.4",
-		"@wordpress/i18n": "^4.2.4"
+		"@wordpress/i18n": "^4.2.4",
+		"prop-types": "^15.7.2"
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^19.2.2"

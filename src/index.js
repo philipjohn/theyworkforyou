@@ -34,7 +34,7 @@ const settings = {
 
 	attributes: {
 		currentMP: {
-			type: 'int',
+			type: 'integer',
 		},
 		noOfEntries: {
 			type: "integer",
