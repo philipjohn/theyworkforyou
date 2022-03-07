@@ -5,90 +5,38 @@ Plugin URI: http://philipjohn.me.uk/category/plugins/theyworkforyou/
 Description: Provides tools for bloggers based on mySociety's TheyWorkForYou.com
 Author: Philip John
 Author URI: http://philipjohn.me.uk
-Version: 0.4.2
-
-Future features list;
- * Custom date format
-
+Version: 1.0.0
+Textdomain: theyworkforyou
 */
-/*  Copyright 2009  Philip John Ltd  (email : talkto@philipjohn.co.uk)
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the Do What The Fuck You Want To Public License
-    (WTFPL).
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-    You should have received a copy of the Do What The Fuck You Want To
-    Public License along with this program; if not, see
-    http://wtfpl.net
-*/
+namespace TheyWorkForYou;
 
 // Go away
-if ( !function_exists( 'add_action' ) ) {
+if ( ! function_exists( 'add_action' ) ) {
 	die('Naughty naughty.');
 }
 
 /**
- * Load the Settings page up
+ * Define the plugin dir for use elsewhere.
  */
-require_once 'inc/settings.php';
-
+define( 'TWFY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
- * Only allow the configuration of widgets etc when an API key is set
+ * Add a settings page.
  */
-if ( $TWFY_Settings->get_setting('twfy_api_key') ) {
-
-	/**
-	 * Get the MPs Recent Activity widget
-	 */
-	require_once 'inc/mps_recent_activity.widget.php';
-
-} else {
-
-	/**
-	 * Remind the user to add their API key
-	 *
-	 * Adds an admin notice to to the dashboard, prompting users to enter their
-	 * API key. Not entering one disables widgets etc.
-	 *
-	 * @since 0.4.0
-	 *
-	 * @see admin_notices
-	 * @url http://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
-	 */
-	function twfy_admin_notice() {
-		?>
-	    <div class="updated">
-	        <p><?php _e( 'Uh-oh, you haven\'t entered your TheyWorkForYou API Key! Please <a href="options-general.php?page=twfy">do so</a>.' ); ?></p>
-	    </div>
-	    <?php
-	}
-	add_action( 'admin_notices', 'twfy_admin_notice' );
-
-
-} // twfy_api_key
+require_once 'inc/admin/settings.php';
 
 /**
- * Add a settings link to the plugin page
- *
- * Provides quicker and easier access to the settings page after activating the plugin.
- *
- * @see plugin_action_links_{$plugin}
- * @url http://codex.wordpress.org/Plugin_API/Filter_Reference/plugin_action_links_(plugin_file_name)
- *
- * @param array $links Links for this plugin
- * @return array Modified links for this plugin
+ * Load the TWFY API library.
  */
-function twfy_add_settings_link( $links ) {
-	$settings_link = '<a href="options-general.php?page=twfy">Settings</a>';
-	array_push( $links, $settings_link );
-	return $links;
-}
-$plugin = plugin_basename( __FILE__ );
-add_filter( "plugin_action_links_$plugin", 'twfy_add_settings_link' );
+require_once TWFY_PLUGIN_DIR . 'vendor/openpolitics/twfyapi/src/twfyapi.php';
 
-?>
+/**
+ * Set up our little API for grabbing data.
+ */
+require_once 'inc/data.php';
+
+/**
+ * Register the TWFY block.
+ */
+require_once 'inc/mps_recent_activity.block.php';

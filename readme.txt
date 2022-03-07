@@ -2,9 +2,9 @@
 Contributors: philipjohn
 Donate link: http://www.mysociety.org/donate
 Tags: theyworkforyou, democracy, politics
-Requires at least: 3.8.1
-Tested up to: 5.8.1
-Stable tag: 0.4.2
+Requires at least: 5.8.0
+Tested up to: 5.8.2
+Stable tag: 1.0.0
 License: WTFPL
 License URI: http://wtfpl.net
 

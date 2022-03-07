@@ -3,6 +3,14 @@
 .project
 .settings
 
+# VSCode
+*.code-workspace
+
 # SVN
 *.svn
 svn
+
+# NPM
+node_modules
+build
+/vendor/
