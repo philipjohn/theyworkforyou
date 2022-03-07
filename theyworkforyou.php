@@ -5,7 +5,7 @@ Plugin URI: http://philipjohn.me.uk/category/plugins/theyworkforyou/
 Description: Provides tools for bloggers based on mySociety's TheyWorkForYou.com
 Author: Philip John
 Author URI: http://philipjohn.me.uk
-Version: 1.0.0
+Version: 1.0.1
 Textdomain: theyworkforyou
 */
 

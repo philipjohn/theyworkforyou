@@ -3,8 +3,8 @@ Contributors: philipjohn
 Donate link: http://www.mysociety.org/donate
 Tags: theyworkforyou, democracy, politics
 Requires at least: 5.8.0
-Tested up to: 5.8.2
-Stable tag: 1.0.0
+Tested up to: 5.9.1
+Stable tag: 1.0.1
 License: WTFPL
 License URI: http://wtfpl.net
 
@@ -14,9 +14,7 @@ Provides tools for bloggers based on mySociety's TheyWorkForYou.com
 
 TheyWorkForYou lets you find out what your MP, MSP or MLA is doing in your name, read debates, written answers, see what’s coming up in Parliament, and sign up for email alerts when there’s past or future activity on someone or something you’re interested in.
 
-This plugin adds a widget to your WordPress site that allows you to show the recent activity of an MP.
-
-Important: The original version of this plugin, built in December 2009 is far too old and should be removed completely before installing this plugin. 
+This plugin adds a block to your WordPress site that allows you to show the recent activity of an MP.
 
 == Installation ==
 
@@ -31,6 +29,9 @@ Then, grab an API key from [TheyWorkForYou.com](http://www.theyworkforyou.com/ap
 Nope! It's a kinda requirement of [TWFY's API](http://www.theyworkforyou.com/api/) and besides, you should be glad to point folks at their amazing resource.
 
 == Changelog ==
+
+= 1.0.0 =
+* Completely re-factored to be Gutenberg compatible, using a block instead of a widget!
 
 = 0.4.2 =
 * TWFY attribution
@@ -53,6 +54,9 @@ Nope! It's a kinda requirement of [TWFY's API](http://www.theyworkforyou.com/api
 * MPs Recent Activity widget
 
 == Upgrade Notice ==
+
+= 1.0.0 =
+The widget is removed in this version, and will need to be replaced on your site by the new block.
 
 = 0.1 =
 If using v0.1b you must first uninstall and remove that plugin, before installing this version.
