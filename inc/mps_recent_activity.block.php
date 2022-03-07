@@ -26,8 +26,7 @@ function twfy_render_callback( $attributes ) {
 
     // Use cached output if we have it.
     $cache_key   = md5( json_encode( $attributes ) );
-    $cache_group = 'theyworkforyou';
-    $output      = wp_cache_get( $cache_key, $cache_group );
+    $output      = get_transient($cache_key);
 
     if ( ! $output ) {
 
@@ -70,7 +69,7 @@ function twfy_render_callback( $attributes ) {
 
         // Cache the output so we can speed up responses in future.
         $output = ob_get_clean();
-        wp_cache_set( $cache_key, $output, $cache_group, HOUR_IN_SECONDS );
+            set_transient($cache_key, $output, HOUR_IN_SECONDS);
     }
 
     return $output;

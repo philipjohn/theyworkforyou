@@ -37,13 +37,13 @@ const settings = {
 			type: 'integer',
 		},
 		noOfEntries: {
-			type: "integer",
-			default: 5
-		}
+			type: 'integer',
+			default: 5,
+		},
 	},
 	supports: {
 		html: false,
-		align: [ 'left', 'center', 'right', 'wide', 'full' ],
+		align: ['left', 'center', 'right', 'wide', 'full'],
 	},
 };
 
@@ -52,4 +52,4 @@ const settings = {
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( 'theyworkforyou/mps-recent-activity', settings );
+registerBlockType('theyworkforyou/mps-recent-activity', settings);

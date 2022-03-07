@@ -44,20 +44,21 @@ class TWFY_WP_API {
                     ],
                 ]
             ]
-        );    
+        );
     }
 
     function get_mps_names_for_dropdown() {
 
         // Grab the data from the cache if we can, to avoid processing.
-        $mps = \wp_cache_get( __FUNCTION__, $this->cache_group );
+        $cache_key = implode('_', [__FUNCTION__, $this->cache_group]);
+        $mps = \get_transient($cache_key);
 
         if ( ! $mps ) {
             $mps = $this->get_mps();
-    
+
             // Sort the array so that MPs are listed alphabetically by name.
             usort( $mps, function( $a, $b ) { return $a->name > $b->name; } );
-    
+
             // Remove the cruft we don't need, to reduce the size of the API response.
             foreach ( $mps as $mp ) {
                 unset(
@@ -67,9 +68,9 @@ class TWFY_WP_API {
                     $mp->office
                 );
             }
-            
+
             // Cache this so we don't need to do this processing every time.
-            \wp_cache_set( __FUNCTION__, $mps, $this->cache_group, DAY_IN_SECONDS );
+            \set_transient($cache_key, $mps, DAY_IN_SECONDS);
         }
 
         return \rest_ensure_response( $mps );
@@ -78,12 +79,12 @@ class TWFY_WP_API {
     function get_mp_details_for_activity( $request ) {
         $id    = (int) $request['id'];
         $count = (int) $request['count'];
-        
+
         $mp      = $this->get_mp_by_person_id( $id );
         $hansard = $this->trim_hansard_for_block_list(
             $this->get_hansard_by_person_id( $id, [ 'limit' => $count ] )->rows
         );
-        
+
         return [ 'fullName' => $mp[0]->full_name, 'items' => $hansard ];
     }
 
@@ -92,36 +93,57 @@ class TWFY_WP_API {
             $this->get_mp_details_for_activity( $request )
         );
     }
-    
+
     function get_mps() {
 
         // Grab MPs from the cache to save API requests.
-        $mps = \wp_cache_get( __FUNCTION__, $this->cache_group );
+        $cache_key = implode('_', [__FUNCTION__, $this->cache_group]);
+        $mps = \get_transient($cache_key);
 
         if ( ! $mps ) {
             $api_response = $this->twfy_api->query( 'getMPs', array( 'output' => 'json' ) );
             $mps = json_decode( $api_response );
-            \wp_cache_set( __FUNCTION__, $mps, $this->cache_group, DAY_IN_SECONDS );
+            \set_transient($cache_key, $mps, DAY_IN_SECONDS);
         }
 
         return $mps;
     }
 
     function get_hansard_by_person_id( $id, $args = [] ) {
+
         $args = wp_parse_args( $args, [
             'limit' => 5,
             'order' => 'd',
         ] );
-        return json_decode( $this->twfy_api->query( 'getHansard', [
-            'person' => $id,
-            'num'    => $args['limit'],
-            'order'  => $args['order'],
-            'output' => 'json',
-        ] ) );
+
+        // Grab from the cache to save API requests.
+        $cache_key = implode('_', [__FUNCTION__, md5(json_encode($args))]);
+        $hansard = get_transient($cache_key);
+
+        if (!$hansard) {
+            $hansard = json_decode($this->twfy_api->query('getHansard', [
+                'person' => $id,
+                'num'    => $args['limit'],
+                'order'  => $args['order'],
+                'output' => 'json',
+            ]));
+            set_transient($cache_key, $hansard, DAY_IN_SECONDS);
+        }
+
+        return $hansard;
     }
 
     function get_mp_by_person_id( $id ) {
-        return json_decode( $this->twfy_api->query( 'getMP', array( 'id' => $id, 'output' => 'json' ) ) );
+        // Grab from the cache to save API requests.
+        $cache_key = implode('_', [__FUNCTION__, $id]);
+        $mp = get_transient($cache_key);
+
+        if (!$mp) {
+            $mp = json_decode($this->twfy_api->query('getMP', array('id' => $id, 'output' => 'json')));
+            set_transient($cache_key, $mp);
+        }
+
+        return $mp;
     }
 
     function trim_hansard_for_block_list( $hansard_rows ) {
@@ -135,8 +157,8 @@ class TWFY_WP_API {
                 'date'    => date( 'D, jS F Y', strtotime( $hansard_rows[ $i ]->hdate ) ),
                 'context' => esc_html( $hansard_rows[ $i ]->parent->body ),
                 'body'    => esc_html( strip_tags( $hansard_rows[ $i ]->extract ) ),
-            ]; 
-            
+            ];
+
             if ( isset( $hansard_rows[ $i ]->htime ) ) {
                 $trimmed[ $i ]['time'] = date( 'g:ia', strtotime( $hansard_rows[ $i ]->htime ) );
             }

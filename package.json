@@ -1,8 +1,8 @@
 {
-	"name": "ps-recent-activity",
-	"version": "0.1.0",
-	"description": "Example block written with ESNext standard and JSX support – build step required.",
-	"author": "The WordPress Contributors",
+	"name": "mps-recent-activity",
+	"version": "1.0.0",
+	"description": "Provides tools for bloggers based on mySociety's TheyWorkForYou.com",
+	"author": "Philip John",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
@@ -14,8 +14,10 @@
 		"packages-update": "wp-scripts packages-update"
 	},
 	"dependencies": {
+		"@wordpress/api-fetch": "^6.0.1",
 		"@wordpress/block-editor": "^8.0.7",
 		"@wordpress/blocks": "^11.1.4",
+		"@wordpress/element": "^4.1.1",
 		"@wordpress/i18n": "^4.2.4",
 		"prop-types": "^15.7.2"
 	},

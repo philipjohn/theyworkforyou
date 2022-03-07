@@ -8,7 +8,7 @@ import {
 	SelectControl,
 	Spinner,
 	PanelBody,
-	RangeControl
+	RangeControl,
 } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 import PropTypes from 'prop-types';
@@ -34,90 +34,91 @@ import ActivityList from './components/activity-list';
  */
 import './editor.scss';
 
-const Edit = ( props ) => {
+const Edit = (props) => {
 	const { attributes, setAttributes, isSelected } = props;
 	const { currentMP, noOfEntries } = attributes;
 	const [ listOfMPs, setListOfMPs ] = useState([]);
 	const [ activity, setActivity ] = useState([]);
 
-	const getListOfMPs = () => {
-		apiFetch( { path: '/twfy/v1/get_mps_names_for_dropdown' } ).then( response =>
-			setListOfMPs( response )
-		);
-	}
-
-	const getActivity = () => {
-		apiFetch( { path: '/twfy/v1/get_mp_details_for_activity/' + currentMP + '/' + noOfEntries } )
-			.then( response =>
-				setActivity( response )
-			);
-	}
-
-	const MPsForSelect = listOfMPs => {
+	const MPsForSelect = (mpsList) => {
 		return [
 			{
 				label: __('Select an MP'),
 				value: null,
 			},
-			...Object.values( listOfMPs ).map( mp => {
+			...Object.values(mpsList).map((mp) => {
 				return {
 					label: mp.name,
 					value: mp.person_id,
-				}
-			} )
+				};
+			}),
 		];
-	}
+	};
 
-	useEffect( () => {
-		getListOfMPs()
-	}, [ listOfMPs ] )
+	// Get the list of MPs on mount.
+	useEffect(() => {
+		apiFetch({ path: '/twfy/v1/get_mps_names_for_dropdown' }).then(
+			(response) => setListOfMPs(response)
+		);
+	}, [ setListOfMPs ]);
 
-	useEffect( () => {
-		getActivity()
-	}, [ currentMP, noOfEntries ] )
+	// Refresh activity when the MP or limit changes.
+	useEffect(() => {
+		apiFetch({
+			path:
+				'/twfy/v1/get_mp_details_for_activity/' +
+				currentMP +
+				'/' +
+				noOfEntries,
+		}).then((response) => setActivity(response));
+	}, [ currentMP, noOfEntries ]);
 
 	return (
 		<Fragment>
 			{ isSelected && (
 				<Placeholder>
-					{ ! listOfMPs && <Spinner /> }
-					{ listOfMPs && !! listOfMPs.length && (
+					{ !listOfMPs && <Spinner /> }
+					{ listOfMPs && !!listOfMPs.length && (
 						<SelectControl
-							label={ __( 'Select an MP' ) }
+							label={ __('Select an MP') }
 							value={ currentMP }
-							options={ MPsForSelect( listOfMPs ) }
-							onChange={ _currentMP => setAttributes( { currentMP: parseInt( _currentMP ) } ) } />
+							options={ MPsForSelect(listOfMPs) }
+							onChange={ (_currentMP) =>
+								setAttributes({
+									currentMP: parseInt(_currentMP),
+								})
+							}
+						/>
 					) }
-					{ listOfMPs && ! listOfMPs.length && (
-						__( 'No MPs list found.' )
-					) }
+					{ listOfMPs && !listOfMPs.length && __('No MPs list found.') }
 				</Placeholder>
 			) }
-			
-			{ activity && ( <ActivityList activity={ activity } /> ) }
-			
+
+			{ activity && <ActivityList activity={ activity } /> }
+
 			<InspectorControls>
 				<PanelBody title={ __('MPs Recent Activity') }>
 					<RangeControl
 						label={ __('Number of items to show') }
 						value={ noOfEntries }
-						onChange={ _noOfEntries => setAttributes( { noOfEntries: _noOfEntries } ) }
+						onChange={ (_noOfEntries) =>
+							setAttributes({ noOfEntries: _noOfEntries })
+						}
 						min={ 1 }
 						max={ 100 }
-						required />
+						required
+					/>
 				</PanelBody>
 			</InspectorControls>
 		</Fragment>
-	)
-}
+	);
+};
 
 Edit.propTypes = {
-	attributes: PropTypes.shape(
-		{
-			currentMP: PropTypes.number,
-			noOfEntries: PropTypes.number
-		}
-	).isRequired
-}
+	attributes: PropTypes.shape({
+		currentMP: PropTypes.number,
+		noOfEntries: PropTypes.number,
+	}).isRequired,
+};
 
 export default Edit;
